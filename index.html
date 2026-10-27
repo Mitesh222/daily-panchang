@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Daily Panchang</title>
+  <title>Vedic Jyotish & Panchang</title>
 
   <!-- iOS PWA Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Panchang">
-  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-title" content="Vedic Jyotish">
+  <meta name="theme-color" content="#0a0d14">
+
+  <!-- Apple Touch Icon (Gold Om Symbol on Deep Indigo) -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%230a0d14'/%3E%3Ccircle cx='256' cy='256' r='210' fill='none' stroke='%23f59e0b' stroke-width='16' stroke-dasharray='12 8'/%3E%3Ctext x='256' y='330' font-size='260' text-anchor='middle' fill='%23fbbf24' font-family='serif'%3E%E0%A5%90%3C/text%3E%3C/svg%3E">
 
   <style>
     :root {
-      --bg: #0b0f19;
-      --card-bg: rgba(22, 29, 45, 0.7);
+      --bg: #090c15;
+      --card-bg: rgba(19, 26, 42, 0.78);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent: #f59e0b;
       --accent-glow: rgba(245, 158, 11, 0.25);
-      --danger: #ef4444;
-      --success: #10b981;
+      --danger: #f87171;
+      --success: #34d399;
+      --info: #60a5fa;
       --text-main: #f3f4f6;
       --text-sub: #9ca3af;
     }
@@ -29,82 +33,121 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text-main);
-      padding: env(safe-area-inset-top) 18px calc(env(safe-area-inset-bottom) + 24px) 18px;
+      padding: env(safe-area-inset-top) 16px calc(env(safe-area-inset-bottom) + 32px) 16px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     header {
-      padding-top: 12px;
+      padding-top: 10px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
     }
 
     .header-title h1 {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      letter-spacing: -0.4px;
+      background: linear-gradient(135deg, #fde68a, #f59e0b);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .header-title p {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-sub);
       margin-top: 2px;
     }
 
-    .badge {
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
       font-size: 11px;
-      padding: 5px 10px;
-      background: rgba(245, 158, 11, 0.15);
+      padding: 6px 10px;
+      background: rgba(245, 158, 11, 0.12);
       color: var(--accent);
-      border-radius: 20px;
+      border-radius: 12px;
       font-weight: 600;
       border: 1px solid rgba(245, 158, 11, 0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
     }
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border: 1px solid var(--card-border);
       border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      padding: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     }
 
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-sub);
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 12px;
     }
 
-    /* Primary 5 Angas Grid */
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Date controls */
+    .date-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .date-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      outline: none;
+      flex: 1;
+    }
+
+    /* Primary Angas */
     .anga-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
     .anga-item {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.025);
       border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 14px;
-      padding: 12px;
+      padding: 11px;
     }
 
     .anga-item.full-width {
@@ -112,17 +155,17 @@
     }
 
     .anga-label {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       color: var(--text-sub);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
     }
 
     .anga-val {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       color: #fff;
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
     .anga-desc {
@@ -131,56 +174,133 @@
       margin-top: 2px;
     }
 
-    /* Timings list */
+    /* Numerology Badge Row */
+    .num-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .num-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .num-val {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-top: 2px;
+    }
+
+    .num-sub {
+      font-size: 10px;
+      color: var(--text-sub);
+    }
+
+    /* Tara Bala Evaluation Card */
+    .tara-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(22, 29, 45, 0.4));
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .tara-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tara-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .tag-good { color: var(--success); font-weight: 600; }
+    .tag-bad { color: var(--danger); font-weight: 600; }
+    .tag-neutral { color: var(--info); font-weight: 600; }
+
+    /* Timing Rows */
     .timing-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 9px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 14px;
+      font-size: 13px;
     }
     .timing-row:last-child {
       border-bottom: none;
       padding-bottom: 0;
     }
-    .timing-row:first-child {
-      padding-top: 0;
-    }
 
-    .tag-bad {
-      color: var(--danger);
-      font-weight: 600;
-    }
-    .tag-good {
-      color: var(--success);
-      font-weight: 600;
-    }
-
-    /* Solar Row */
-    .sun-row {
+    /* Choghadiya */
+    .tab-group {
       display: flex;
-      justify-content: space-around;
-      text-align: center;
-    }
-    .sun-item h4 {
-      font-size: 11px;
-      color: var(--text-sub);
-      text-transform: uppercase;
-    }
-    .sun-item p {
-      font-size: 17px;
-      font-weight: 700;
-      margin-top: 4px;
-      color: #fbbf24;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 3px;
     }
 
-    .footer-note {
-      text-align: center;
-      font-size: 11px;
+    .tab-btn {
+      border: none;
+      background: transparent;
       color: var(--text-sub);
-      margin-top: auto;
-      padding-top: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .chog-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 13px;
+    }
+
+    .chog-row.current-slot {
+      background: rgba(245, 158, 11, 0.16);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+    }
+
+    .now-pill {
+      font-size: 9px;
+      background: var(--accent);
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-left: 5px;
+    }
+
+    /* Shastra Guidance Box */
+    .guidance-box {
+      border-left: 3px solid var(--accent);
+      background: rgba(245, 158, 11, 0.05);
+      padding: 10px 12px;
+      border-radius: 0 10px 10px 0;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e5e7eb;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -188,33 +308,42 @@
 
   <header>
     <div class="header-title">
-      <h1>Dainik Panchang</h1>
-      <p id="currentDateDisplay">Calculating...</p>
+      <h1>Vedic Panchang</h1>
+      <p id="currentDateDisplay">Loading Surya Siddhanta...</p>
     </div>
-    <div class="badge" id="autoUpdateBadge">Auto-Updated</div>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="requestLocation()" id="gpsBtn">📍 Locate</button>
+      <a class="icon-btn" href="astrosage://" target="_blank">AstroSage ↗</a>
+    </div>
   </header>
 
-  <!-- Sun Timings -->
+  <!-- Interactive Date Picker & Solar Card -->
   <div class="card">
-    <div class="sun-row">
-      <div class="sun-item">
-        <h4>Sunrise (Udaya)</h4>
-        <p id="sunriseDisplay">06:12 AM</p>
+    <div class="date-row">
+      <input type="date" id="selectedDateInput" class="date-input" onchange="onDateChanged()">
+      <button class="icon-btn" onclick="resetToToday()">Today</button>
+    </div>
+    <div style="display: flex; justify-content: space-between; text-align: center; margin-top: 6px;">
+      <div style="flex: 1;">
+        <div style="font-size: 10px; color: var(--text-sub);">SUNRISE</div>
+        <div id="sunriseDisplay" style="font-size: 15px; font-weight: 700; color: #fbbf24; margin-top: 3px;">--:--</div>
       </div>
-      <div class="sun-item">
-        <h4>Sunset (Astha)</h4>
-        <p id="sunsetDisplay">06:05 PM</p>
+      <div style="flex: 1;">
+        <div style="font-size: 10px; color: var(--text-sub);">SUNSET</div>
+        <div id="sunsetDisplay" style="font-size: 15px; font-weight: 700; color: #fbbf24; margin-top: 3px;">--:--</div>
       </div>
-      <div class="sun-item">
-        <h4>Ayanamsha</h4>
-        <p>Lahiri</p>
+      <div style="flex: 1;">
+        <div style="font-size: 10px; color: var(--text-sub);">POSITION</div>
+        <div id="coordDisplay" style="font-size: 12px; font-weight: 600; color: #d1d5db; margin-top: 4px;">--</div>
       </div>
     </div>
   </div>
 
-  <!-- The 5 Core Limbs (Pancha-Angas) -->
+  <!-- Classical 5 Angas (Brihat Parashara System) -->
   <div class="card">
-    <div class="section-title">The 5 Core Angas</div>
+    <div class="section-header">
+      <div class="section-title">The 5 Core Angas (Lahiri Ayanamsha)</div>
+    </div>
     <div class="anga-grid">
       <div class="anga-item">
         <div class="anga-label">1. Vara (Day)</div>
@@ -244,19 +373,86 @@
     </div>
   </div>
 
-  <!-- Muhurats & Kaal Timings -->
+  <!-- Personalized Vedic Numerology & Birth Affinity -->
   <div class="card">
-    <div class="section-title">Key Muhurats & Kaal Timings</div>
-    <div class="timing-row">
-      <span>Abhijit Muhurat <small style="color:var(--text-sub)">(Auspicious)</small></span>
-      <span class="tag-good" id="abhijitVal">11:45 AM - 12:35 PM</span>
+    <div class="section-header">
+      <div class="section-title">Sankhya Shastra (Vedic Numerology)</div>
+      <span style="font-size: 11px; color: var(--accent);">Personal Matrix</span>
+    </div>
+
+    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+      <span style="font-size: 11px; color: var(--text-sub);">Your Birthdate:</span>
+      <input type="date" id="dobInput" class="date-input" style="padding: 4px 8px; font-size: 12px;" onchange="saveDob()">
+    </div>
+
+    <div class="num-grid">
+      <div class="num-card">
+        <div class="num-sub">MULANK (PSYCHIC)</div>
+        <div class="num-val" id="mulankVal">-</div>
+        <div class="num-sub" id="mulankPlanet">Lord -</div>
+      </div>
+      <div class="num-card">
+        <div class="num-sub">BHAGYANK (DESTINY)</div>
+        <div class="num-val" id="bhagyankVal">-</div>
+        <div class="num-sub" id="bhagyankPlanet">Lord -</div>
+      </div>
+      <div class="num-card">
+        <div class="num-sub">DAY RESONANCE</div>
+        <div class="num-val" id="dayNumVal">-</div>
+        <div class="num-sub" id="numAffinity">-</div>
+      </div>
+    </div>
+
+    <!-- Personal Tara Bala Checker -->
+    <div class="tara-card">
+      <div class="section-header" style="margin-bottom: 6px;">
+        <span style="font-size: 11px; font-weight: 700; color: #fbbf24;">NATAL TARA BALA (NAVATARA CHAKRA)</span>
+        <select id="birthNakSelect" class="date-input" style="padding: 2px 6px; font-size: 11px; width: auto;" onchange="updateTaraBala()">
+          <option value="-1">Select Birth Star</option>
+        </select>
+      </div>
+      <div class="tara-status">
+        <div>
+          <span class="tara-name" id="taraNameDisplay">Select Janma Nakshatra</span>
+          <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;" id="taraMeaningDisplay">Scriptural Tara Bala determines cosmic alignment for today</div>
+        </div>
+        <span id="taraPill" class="tag-neutral" style="font-size: 13px; font-weight: 700;">-</span>
+      </div>
+    </div>
+
+    <!-- Scriptural Directive -->
+    <div class="guidance-box" id="scriptureDirective">
+      <em>Muhurta Chintamani:</em> When initiating critical work, ensure the Tara Bala falls under Sampat, Kshema, Sadhana, or Mitra, and avoid Rahu Kaal and Vishti (Bhadra) Karana.
+    </div>
+  </div>
+
+  <!-- Choghadiya Muhurats -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-title">Choghadiya Muhurat</div>
+      <div class="tab-group">
+        <button class="tab-btn active" id="tabDay" onclick="switchChoghadiya('day')">☀️ Day</button>
+        <button class="tab-btn" id="tabNight" onclick="switchChoghadiya('night')">🌙 Night</button>
+      </div>
+    </div>
+    <div id="choghadiyaList"></div>
+  </div>
+
+  <!-- Inauspicious & Auspicious Periods -->
+  <div class="card">
+    <div class="section-header">
+      <div class="section-title">Classical Kaal Timings</div>
     </div>
     <div class="timing-row">
-      <span>Brahma Muhurta</span>
-      <span id="brahmaVal">04:36 AM - 05:24 AM</span>
+      <span>Abhijit Muhurat <small style="color:var(--text-sub)">(Best Solar Arc)</small></span>
+      <span class="tag-good" id="abhijitVal">-</span>
     </div>
     <div class="timing-row">
-      <span>Rahu Kaal <small style="color:var(--danger)">(Avoid)</small></span>
+      <span>Brahma Muhurta <small style="color:var(--text-sub)">(Dhyana & Sadhana)</small></span>
+      <span class="tag-good" id="brahmaVal">-</span>
+    </div>
+    <div class="timing-row">
+      <span>Rahu Kaal <small style="color:var(--danger)">(Varjya - Avoid)</small></span>
       <span class="tag-bad" id="rahuVal">-</span>
     </div>
     <div class="timing-row">
@@ -269,11 +465,14 @@
     </div>
   </div>
 
-  <div class="footer-note">
-    Automatically refreshed for today's coordinates.
-  </div>
-
   <script>
+    // State
+    let userLat = parseFloat(localStorage.getItem('panchang_lat')) || 12.9716;
+    let userLon = parseFloat(localStorage.getItem('panchang_lon')) || 77.5946;
+    let viewDate = new Date();
+    let activeChogTab = 'day';
+    let currentNakshatraIndex = 0;
+
     const nakshatras = [
       "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
       "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni",
@@ -320,123 +519,408 @@
     ];
 
     const varas = [
-      { name: "Ravivara (Sunday)", lord: "Lord Surya" },
-      { name: "Somavara (Monday)", lord: "Lord Chandra" },
-      { name: "Mangalavara (Tuesday)", lord: "Lord Mangal" },
-      { name: "Budhavara (Wednesday)", lord: "Lord Budha" },
-      { name: "Guruvara (Thursday)", lord: "Lord Brihaspati" },
-      { name: "Shukravara (Friday)", lord: "Lord Shukra" },
-      { name: "Shanivara (Saturday)", lord: "Lord Shani" }
+      { name: "Ravivara", lord: "Surya" },
+      { name: "Somavara", lord: "Chandra" },
+      { name: "Mangalavara", lord: "Mangal" },
+      { name: "Budhavara", lord: "Budha" },
+      { name: "Guruvara", lord: "Brihaspati" },
+      { name: "Shukravara", lord: "Shukra" },
+      { name: "Shanivara", lord: "Shani" }
     ];
 
-    // Rahu, Yama, Gulika periods based on weekday (1/8th parts of day between sunrise & sunset)
-    const dayParts = {
-      0: { rahu: 8, yama: 5, gulika: 7 }, // Sun
-      1: { rahu: 2, yama: 4, gulika: 6 }, // Mon
-      2: { rahu: 7, yama: 3, gulika: 5 }, // Tue
-      3: { rahu: 5, yama: 2, gulika: 4 }, // Wed
-      4: { rahu: 6, yama: 1, gulika: 3 }, // Thu
-      5: { rahu: 4, yama: 7, gulika: 2 }, // Fri
-      6: { rahu: 3, yama: 6, gulika: 1 }  // Sat
+    const navatara = [
+      { name: "Janma Tara", desc: "Vulnerability / Body / Health", quality: "Neutral", tag: "tag-neutral" },
+      { name: "Sampat Tara", desc: "Wealth, Prosperity & Inflow", quality: "Very Auspicious", tag: "tag-good" },
+      { name: "Vipat Tara", desc: "Loss, Dangers & Obstacles", quality: "Inauspicious", tag: "tag-bad" },
+      { name: "Kshema Tara", desc: "Well-Being, Safety & Gain", quality: "Auspicious", tag: "tag-good" },
+      { name: "Pratyak Tara", desc: "Disputes, Conflict & Delays", quality: "Inauspicious", tag: "tag-bad" },
+      { name: "Sadhana Tara", desc: "Fulfillment, Success & Mastery", quality: "Very Auspicious", tag: "tag-good" },
+      { name: "Naidhana Tara", desc: "Destruction / Severe Affliction", quality: "Varjya (Strict Avoid)", tag: "tag-bad" },
+      { name: "Mitra Tara", desc: "Friendly Support & Harmony", quality: "Auspicious", tag: "tag-good" },
+      { name: "Parama Mitra", desc: "Supreme Friend & Great Gain", quality: "Highly Auspicious", tag: "tag-good" }
+    ];
+
+    const numerologyPlanets = {
+      1: "Surya (Sun)", 2: "Chandra (Moon)", 3: "Brihaspati (Jupiter)",
+      4: "Rahu", 5: "Budha (Mercury)", 6: "Shukra (Venus)",
+      7: "Ketu", 8: "Shani (Saturn)", 9: "Mangal (Mars)"
     };
 
-    function formatTime(date) {
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dayParts = {
+      0: { rahu: 8, yama: 5, gulika: 7 },
+      1: { rahu: 2, yama: 4, gulika: 6 },
+      2: { rahu: 7, yama: 3, gulika: 5 },
+      3: { rahu: 5, yama: 2, gulika: 4 },
+      4: { rahu: 6, yama: 1, gulika: 3 },
+      5: { rahu: 4, yama: 7, gulika: 2 },
+      6: { rahu: 3, yama: 6, gulika: 1 }
+    };
+
+    const chogMeta = {
+      "Udveg": { nature: "Inauspicious (Sun)", cls: "tag-bad" },
+      "Char":  { nature: "Good / Motion (Venus)", cls: "tag-neutral" },
+      "Labh":  { nature: "Auspicious / Profit (Mercury)", cls: "tag-good" },
+      "Amrit": { nature: "Best / Divine Nectar (Moon)", cls: "tag-good" },
+      "Kaal":  { nature: "Inauspicious / Loss (Saturn)", cls: "tag-bad" },
+      "Shubh": { nature: "Auspicious / Sacred (Jupiter)", cls: "tag-good" },
+      "Rog":   { nature: "Inauspicious / Disease (Mars)", cls: "tag-bad" }
+    };
+
+    const dayChogSequences = [
+      ["Udveg", "Char", "Labh", "Amrit", "Kaal", "Shubh", "Rog", "Udveg"], // Sun
+      ["Amrit", "Kaal", "Shubh", "Rog", "Udveg", "Char", "Labh", "Amrit"], // Mon
+      ["Rog", "Udveg", "Char", "Labh", "Amrit", "Kaal", "Shubh", "Rog"],   // Tue
+      ["Labh", "Amrit", "Kaal", "Shubh", "Rog", "Udveg", "Char", "Labh"],  // Wed
+      ["Shubh", "Rog", "Udveg", "Char", "Labh", "Amrit", "Kaal", "Shubh"], // Thu
+      ["Char", "Labh", "Amrit", "Kaal", "Shubh", "Rog", "Udveg", "Char"],  // Fri
+      ["Kaal", "Shubh", "Rog", "Udveg", "Char", "Labh", "Amrit", "Kaal"]   // Sat
+    ];
+
+    const nightChogSequences = [
+      ["Shubh", "Amrit", "Char", "Rog", "Kaal", "Labh", "Udveg", "Shubh"], // Sun
+      ["Char", "Rog", "Kaal", "Labh", "Udveg", "Shubh", "Amrit", "Char"],  // Mon
+      ["Kaal", "Labh", "Udveg", "Shubh", "Amrit", "Char", "Rog", "Kaal"],  // Tue
+      ["Udveg", "Shubh", "Amrit", "Char", "Rog", "Kaal", "Labh", "Udveg"], // Wed
+      ["Amrit", "Char", "Rog", "Kaal", "Labh", "Udveg", "Shubh", "Amrit"], // Thu
+      ["Rog", "Kaal", "Labh", "Udveg", "Shubh", "Amrit", "Char", "Rog"],   // Fri
+      ["Labh", "Udveg", "Shubh", "Amrit", "Char", "Rog", "Kaal", "Labh"]   // Sat
+    ];
+
+    let choghadiyaData = { day: [], night: [] };
+
+    function reduceToSingleDigit(num) {
+      while (num > 9) {
+        num = num.toString().split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
+      }
+      return num;
+    }
+
+    function initBirthNakshatraOptions() {
+      const select = document.getElementById('birthNakSelect');
+      nakshatras.forEach((name, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${idx + 1}. ${name}`;
+        select.appendChild(opt);
+      });
+      const savedNak = localStorage.getItem('panchang_birth_nak');
+      if (savedNak !== null) {
+        select.value = savedNak;
+      }
+    }
+
+    function saveDob() {
+      const dobVal = document.getElementById('dobInput').value;
+      if (dobVal) {
+        localStorage.setItem('panchang_dob', dobVal);
+        computeNumerology();
+      }
+    }
+
+    function updateTaraBala() {
+      const select = document.getElementById('birthNakSelect');
+      const birthIdx = parseInt(select.value);
+      if (birthIdx === -1 || isNaN(birthIdx)) {
+        document.getElementById('taraNameDisplay').innerText = "Select Birth Star";
+        document.getElementById('taraMeaningDisplay').innerText = "Pick your Moon Nakshatra from your AstroSage Kundli";
+        document.getElementById('taraPill').innerText = "-";
+        return;
+      }
+
+      localStorage.setItem('panchang_birth_nak', birthIdx);
+
+      // Navatara formula: (transitNak - birthNak + 27) % 9
+      const count = (currentNakshatraIndex - birthIdx + 27) % 27;
+      const taraIndex = count % 9;
+      const result = navatara[taraIndex];
+
+      document.getElementById('taraNameDisplay').innerText = result.name;
+      document.getElementById('taraMeaningDisplay').innerText = result.desc;
+      const pill = document.getElementById('taraPill');
+      pill.innerText = result.quality;
+      pill.className = result.tag;
+    }
+
+    function computeNumerology() {
+      const dobVal = document.getElementById('dobInput').value || localStorage.getItem('panchang_dob');
+      if (!dobVal) return;
+
+      document.getElementById('dobInput').value = dobVal;
+      const [y, m, d] = dobVal.split('-').map(v => parseInt(v, 10));
+
+      const mulank = reduceToSingleDigit(d);
+      const fullSum = dobVal.replace(/-/g, '').split('').reduce((acc, c) => acc + parseInt(c, 10), 0);
+      const bhagyank = reduceToSingleDigit(fullSum);
+
+      document.getElementById('mulankVal').innerText = mulank;
+      document.getElementById('mulankPlanet').innerText = numerologyPlanets[mulank];
+
+      document.getElementById('bhagyankVal').innerText = bhagyank;
+      document.getElementById('bhagyankPlanet').innerText = numerologyPlanets[bhagyank];
+
+      // Current Day Number
+      const curDay = viewDate.getDate();
+      const dayNum = reduceToSingleDigit(curDay);
+      document.getElementById('dayNumVal').innerText = dayNum;
+
+      // Affinity between Mulank and Day Number
+      const harmoniousPairs = {
+        1: [1, 2, 3, 9],
+        2: [1, 2, 5],
+        3: [1, 3, 9],
+        4: [5, 6, 8],
+        5: [1, 5, 6],
+        6: [5, 6, 8],
+        7: [1, 2, 7],
+        8: [4, 5, 6],
+        9: [1, 3, 9]
+      };
+
+      const isHarmonious = (harmoniousPairs[mulank] || []).includes(dayNum);
+      const affEl = document.getElementById('numAffinity');
+      if (mulank === dayNum) {
+        affEl.innerText = "Direct Harmony";
+        affEl.style.color = "var(--success)";
+      } else if (isHarmonious) {
+        affEl.innerText = "Supportive Day";
+        affEl.style.color = "var(--success)";
+      } else {
+        affEl.innerText = "Neutral Energy";
+        affEl.style.color = "var(--text-sub)";
+      }
+    }
+
+    function getSunTimes(dateObj, lat, lon) {
+      const rad = Math.PI / 180;
+      const deg = 180 / Math.PI;
+
+      const start = new Date(dateObj.getFullYear(), 0, 0);
+      const dayOfYear = Math.floor((dateObj - start) / 86400000);
+
+      const gamma = ((2 * Math.PI) / 365) * (dayOfYear - 1);
+      const eqTime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma)
+                    - 0.014615 * Math.cos(2 * gamma) - 0.040849 * Math.sin(2 * gamma));
+
+      const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma)
+                 - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma)
+                 - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma);
+
+      const cosHA = (Math.cos(90.833 * rad) / (Math.cos(lat * rad) * Math.cos(decl))) - Math.tan(lat * rad) * Math.tan(decl);
+      const clampedCos = Math.max(-1, Math.min(1, cosHA));
+      const ha = Math.acos(clampedCos) * deg;
+
+      const sunriseUTCMin = 720 - 4 * (lon + ha) - eqTime;
+      const sunsetUTCMin  = 720 - 4 * (lon - ha) - eqTime;
+
+      const utcMidnight = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+      return {
+        sunrise: new Date(utcMidnight + sunriseUTCMin * 60000),
+        sunset: new Date(utcMidnight + sunsetUTCMin * 60000)
+      };
+    }
+
+    function formatTime(d) {
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function switchChoghadiya(tab) {
+      activeChogTab = tab;
+      document.getElementById('tabDay').classList.toggle('active', tab === 'day');
+      document.getElementById('tabNight').classList.toggle('active', tab === 'night');
+      renderChoghadiya();
+    }
+
+    function renderChoghadiya() {
+      const listEl = document.getElementById('choghadiyaList');
+      const items = choghadiyaData[activeChogTab];
+      const nowMs = Date.now();
+
+      listEl.innerHTML = items.map(slot => {
+        const isCurrent = nowMs >= slot.start.getTime() && nowMs < slot.end.getTime();
+        const meta = chogMeta[slot.name];
+        return `
+          <div class="chog-row ${isCurrent ? 'current-slot' : ''}">
+            <div>
+              <div style="font-weight:600;">
+                ${slot.name}
+                ${isCurrent ? '<span class="now-pill">Current</span>' : ''}
+              </div>
+              <div style="font-size:10px;" class="${meta.cls}">${meta.nature}</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:500; font-variant-numeric:tabular-nums;">${formatTime(slot.start)} - ${formatTime(slot.end)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function calculatePanchang() {
-      const now = new Date();
-      
-      // Date string header
+      const targetDate = viewDate;
+      document.getElementById('coordDisplay').innerText = `${userLat.toFixed(2)}°N, ${userLon.toFixed(2)}°E`;
+
       const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-      document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString(undefined, options);
+      document.getElementById('currentDateDisplay').innerText = targetDate.toLocaleDateString(undefined, options);
 
-      // Vara
-      const dayIndex = now.getDay();
+      const yyyy = targetDate.getFullYear();
+      const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+      const dd = String(targetDate.getDate()).padStart(2, '0');
+      document.getElementById('selectedDateInput').value = `${yyyy}-${mm}-${dd}`;
+
+      const sunTimes = getSunTimes(targetDate, userLat, userLon);
+      const tomorrow = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() + 1);
+      const nextSunTimes = getSunTimes(tomorrow, userLat, userLon);
+
+      const sunrise = sunTimes.sunrise;
+      const sunset = sunTimes.sunset;
+      const nextSunrise = nextSunTimes.sunrise;
+
+      document.getElementById('sunriseDisplay').innerText = formatTime(sunrise);
+      document.getElementById('sunsetDisplay').innerText = formatTime(sunset);
+
+      const dayIndex = targetDate.getDay();
       document.getElementById('varaVal').innerText = varas[dayIndex].name;
-      document.getElementById('varaLord').innerText = `Ruler: ${varas[dayIndex].lord}`;
+      document.getElementById('varaLord').innerText = `Adhipati: ${varas[dayIndex].lord}`;
 
-      // Approximate Ephemeris / Sun-Moon Longitude math
-      const jd = (now.getTime() / 86400000.0) + 2440587.5;
+      // Sidereal Ephemeris Calculations
+      const jd = (targetDate.getTime() / 86400000.0) + 2440587.5;
       const d = jd - 2451545.0;
 
-      // Sun mean longitude
-      let L_sun = (280.466 + 0.9856474 * d) % 360;
+      const g_sun = (357.529 + 0.98560028 * d) * (Math.PI / 180);
+      let L_sun = (280.466 + 0.9856474 * d + 1.915 * Math.sin(g_sun) + 0.020 * Math.sin(2 * g_sun)) % 360;
       if (L_sun < 0) L_sun += 360;
 
-      // Moon mean longitude
-      let L_moon = (218.316 + 13.176396 * d) % 360;
+      const g_moon = (134.963 + 13.064993 * d) * (Math.PI / 180);
+      let L_moon = (218.316 + 13.176396 * d + 6.289 * Math.sin(g_moon)) % 360;
       if (L_moon < 0) L_moon += 360;
 
-      // Lahiri Ayanamsha correction (~24.1 deg)
-      const ayanamsha = 24.1;
+      // Lahiri Ayanamsha (~24.13°)
+      const ayanamsha = 24.13;
       const siderealSun = (L_sun - ayanamsha + 360) % 360;
       const siderealMoon = (L_moon - ayanamsha + 360) % 360;
 
-      // 1. Tithi: (Moon - Sun) / 12 deg
-      let moonSunDiff = (siderealMoon - siderealSun + 360) % 360;
-      let tithiIndex = Math.floor(moonSunDiff / 12);
-      let isShukla = tithiIndex < 15;
+      // 1. Tithi
+      const moonSunDiff = (siderealMoon - siderealSun + 360) % 360;
+      const tithiIndex = Math.floor(moonSunDiff / 12);
+      const isShukla = tithiIndex < 15;
       document.getElementById('tithiVal').innerText = tithis[tithiIndex];
       document.getElementById('tithiPaksha').innerText = isShukla ? "Shukla Paksha" : "Krishna Paksha";
 
-      // 2. Nakshatra: Moon / 13 deg 20 min (13.333 deg)
-      let nakIndex = Math.floor(siderealMoon / (360 / 27));
-      document.getElementById('nakshatraVal').innerText = nakshatras[nakIndex];
-      document.getElementById('nakshatraLord').innerText = `Ruler: ${nakshatraLords[nakIndex]}`;
+      // 2. Nakshatra
+      currentNakshatraIndex = Math.floor(siderealMoon / (360 / 27));
+      document.getElementById('nakshatraVal').innerText = nakshatras[currentNakshatraIndex];
+      document.getElementById('nakshatraLord').innerText = `Ruler: ${nakshatraLords[currentNakshatraIndex]}`;
 
-      // 3. Yoga: (Sun + Moon) / 13 deg 20 min
-      let yogaIndex = Math.floor(((siderealSun + siderealMoon) % 360) / (360 / 27));
+      // 3. Yoga
+      const yogaIndex = Math.floor(((siderealSun + siderealMoon) % 360) / (360 / 27));
       document.getElementById('yogaVal').innerText = yogas[yogaIndex].name;
       document.getElementById('yogaQuality').innerText = `${yogas[yogaIndex].q} Yoga`;
 
-      // 4. Karana: Half-tithi
-      let karanaIndex = Math.floor(moonSunDiff / 6);
+      // 4. Karana
+      const karanaIndex = Math.floor(moonSunDiff / 6);
       let karanaName = "";
       if (karanaIndex === 0) karanaName = "Kintughna";
       else if (karanaIndex >= 57) karanaName = karanas[7 + (karanaIndex - 57)];
       else karanaName = karanas[(karanaIndex - 1) % 7];
       document.getElementById('karanaVal').innerText = karanaName;
-      document.getElementById('karanaNature').innerText = karanaName.includes("Vishti") ? "Inauspicious (Avoid New Work)" : "Standard Karana";
+      document.getElementById('karanaNature').innerText = karanaName.includes("Vishti") ? "Bhadra (Avoid Auspicious Beginnings)" : "Favorable Karana";
 
-      // Sunrise / Sunset & 8-Part Kaal calculation
-      const sunrise = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 12);
-      const sunset = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 5);
+      // Daylight & Night Split for Choghadiya & Kaal
       const dayLengthMs = sunset.getTime() - sunrise.getTime();
-      const slotMs = dayLengthMs / 8;
+      const nightLengthMs = nextSunrise.getTime() - sunset.getTime();
+      const daySlotMs = dayLengthMs / 8;
+      const nightSlotMs = nightLengthMs / 8;
 
-      document.getElementById('sunriseDisplay').innerText = formatTime(sunrise);
-      document.getElementById('sunsetDisplay').innerText = formatTime(sunset);
-
-      // Abhijit (8th muhurat of 15 daylight muhurats, approx noon)
+      // Abhijit & Brahma Muhurta
       const abhijitStart = new Date(sunrise.getTime() + (dayLengthMs * 7 / 15));
       const abhijitEnd = new Date(sunrise.getTime() + (dayLengthMs * 8 / 15));
       document.getElementById('abhijitVal').innerText = `${formatTime(abhijitStart)} - ${formatTime(abhijitEnd)}`;
 
-      // Brahma Muhurta (approx 1 hr 36 min before sunrise)
-      const brahmaStart = new Date(sunrise.getTime() - (96 * 60 * 1000));
-      const brahmaEnd = new Date(sunrise.getTime() - (48 * 60 * 1000));
+      const brahmaStart = new Date(sunrise.getTime() - (96 * 60000));
+      const brahmaEnd = new Date(sunrise.getTime() - (48 * 60000));
       document.getElementById('brahmaVal').innerText = `${formatTime(brahmaStart)} - ${formatTime(brahmaEnd)}`;
 
-      // Rahu Kaal, Yamaghanta, Gulika Kaal
+      // Rahu, Yama, Gulika
       const timingParts = dayParts[dayIndex];
       const getSlotTimes = (part) => {
-        const start = new Date(sunrise.getTime() + ((part - 1) * slotMs));
-        const end = new Date(sunrise.getTime() + (part * slotMs));
-        return `${formatTime(start)} - ${formatTime(end)}`;
+        const s = new Date(sunrise.getTime() + ((part - 1) * daySlotMs));
+        const e = new Date(sunrise.getTime() + (part * daySlotMs));
+        return `${formatTime(s)} - ${formatTime(e)}`;
       };
 
       document.getElementById('rahuVal').innerText = getSlotTimes(timingParts.rahu);
       document.getElementById('yamaVal').innerText = getSlotTimes(timingParts.yama);
       document.getElementById('gulikaVal').innerText = getSlotTimes(timingParts.gulika);
+
+      // Choghadiya Arrays
+      choghadiyaData.day = dayChogSequences[dayIndex].map((name, i) => ({
+        name,
+        start: new Date(sunrise.getTime() + i * daySlotMs),
+        end: new Date(sunrise.getTime() + (i + 1) * daySlotMs)
+      }));
+
+      choghadiyaData.night = nightChogSequences[dayIndex].map((name, i) => ({
+        name,
+        start: new Date(sunset.getTime() + i * nightSlotMs),
+        end: new Date(sunset.getTime() + (i + 1) * nightSlotMs)
+      }));
+
+      renderChoghadiya();
+      computeNumerology();
+      updateTaraBala();
     }
 
-    // Run automatically on open
+    function onDateChanged() {
+      const val = document.getElementById('selectedDateInput').value;
+      if (val) {
+        const [y, m, d] = val.split('-').map(Number);
+        viewDate = new Date(y, m - 1, d, 12, 0, 0);
+        calculatePanchang();
+      }
+    }
+
+    function resetToToday() {
+      viewDate = new Date();
+      calculatePanchang();
+    }
+
+    function requestLocation() {
+      const gpsBtn = document.getElementById('gpsBtn');
+      if (!navigator.geolocation) {
+        gpsBtn.innerText = "📍 No GPS";
+        return;
+      }
+      gpsBtn.innerText = "⏳ Locating...";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          userLat = pos.coords.latitude;
+          userLon = pos.coords.longitude;
+          localStorage.setItem('panchang_lat', userLat);
+          localStorage.setItem('panchang_lon', userLon);
+          gpsBtn.innerText = "📍 Synced";
+          calculatePanchang();
+        },
+        () => {
+          gpsBtn.innerText = "📍 Default";
+          calculatePanchang();
+        },
+        { timeout: 8000 }
+      );
+    }
+
+    // Init
+    initBirthNakshatraOptions();
     calculatePanchang();
 
-    // Auto-update check every minute if the date rolls over
+    // Auto-refresh every minute
     setInterval(() => {
-      calculatePanchang();
+      // Only auto-roll date if the user is looking at today
+      const todayStr = new Date().toISOString().split('T')[0];
+      const viewStr = viewDate.toISOString().split('T')[0];
+      if (todayStr === viewStr) {
+        viewDate = new Date();
+        calculatePanchang();
+      }
     }, 60000);
   </script>
 </body>
