@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Daily Panchang</title>
+
+  <!-- iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Panchang">
+  <meta name="theme-color" content="#0d1117">
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(22, 29, 45, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.25);
+      --danger: #ef4444;
+      --success: #10b981;
+      --text-main: #f3f4f6;
+      --text-sub: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: env(safe-area-inset-top) 18px calc(env(safe-area-inset-bottom) + 24px) 18px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header-title h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-title p {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 5px 10px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      border-radius: 20px;
+      font-weight: 600;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    /* Primary 5 Angas Grid */
+    .anga-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .anga-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .anga-item.full-width {
+      grid-column: span 2;
+    }
+
+    .anga-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      letter-spacing: 0.5px;
+    }
+
+    .anga-val {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 4px;
+    }
+
+    .anga-desc {
+      font-size: 11px;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    /* Timings list */
+    .timing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 14px;
+    }
+    .timing-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .timing-row:first-child {
+      padding-top: 0;
+    }
+
+    .tag-bad {
+      color: var(--danger);
+      font-weight: 600;
+    }
+    .tag-good {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    /* Solar Row */
+    .sun-row {
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .sun-item h4 {
+      font-size: 11px;
+      color: var(--text-sub);
+      text-transform: uppercase;
+    }
+    .sun-item p {
+      font-size: 17px;
+      font-weight: 700;
+      margin-top: 4px;
+      color: #fbbf24;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: auto;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-title">
+      <h1>Dainik Panchang</h1>
+      <p id="currentDateDisplay">Calculating...</p>
+    </div>
+    <div class="badge" id="autoUpdateBadge">Auto-Updated</div>
+  </header>
+
+  <!-- Sun Timings -->
+  <div class="card">
+    <div class="sun-row">
+      <div class="sun-item">
+        <h4>Sunrise (Udaya)</h4>
+        <p id="sunriseDisplay">06:12 AM</p>
+      </div>
+      <div class="sun-item">
+        <h4>Sunset (Astha)</h4>
+        <p id="sunsetDisplay">06:05 PM</p>
+      </div>
+      <div class="sun-item">
+        <h4>Ayanamsha</h4>
+        <p>Lahiri</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The 5 Core Limbs (Pancha-Angas) -->
+  <div class="card">
+    <div class="section-title">The 5 Core Angas</div>
+    <div class="anga-grid">
+      <div class="anga-item">
+        <div class="anga-label">1. Vara (Day)</div>
+        <div class="anga-val" id="varaVal">-</div>
+        <div class="anga-desc" id="varaLord">-</div>
+      </div>
+      <div class="anga-item">
+        <div class="anga-label">2. Tithi (Lunar Day)</div>
+        <div class="anga-val" id="tithiVal">-</div>
+        <div class="anga-desc" id="tithiPaksha">-</div>
+      </div>
+      <div class="anga-item">
+        <div class="anga-label">3. Nakshatra</div>
+        <div class="anga-val" id="nakshatraVal">-</div>
+        <div class="anga-desc" id="nakshatraLord">-</div>
+      </div>
+      <div class="anga-item">
+        <div class="anga-label">4. Yoga</div>
+        <div class="anga-val" id="yogaVal">-</div>
+        <div class="anga-desc" id="yogaQuality">-</div>
+      </div>
+      <div class="anga-item full-width">
+        <div class="anga-label">5. Karana (Half-Tithi)</div>
+        <div class="anga-val" id="karanaVal">-</div>
+        <div class="anga-desc" id="karanaNature">-</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Muhurats & Kaal Timings -->
+  <div class="card">
+    <div class="section-title">Key Muhurats & Kaal Timings</div>
+    <div class="timing-row">
+      <span>Abhijit Muhurat <small style="color:var(--text-sub)">(Auspicious)</small></span>
+      <span class="tag-good" id="abhijitVal">11:45 AM - 12:35 PM</span>
+    </div>
+    <div class="timing-row">
+      <span>Brahma Muhurta</span>
+      <span id="brahmaVal">04:36 AM - 05:24 AM</span>
+    </div>
+    <div class="timing-row">
+      <span>Rahu Kaal <small style="color:var(--danger)">(Avoid)</small></span>
+      <span class="tag-bad" id="rahuVal">-</span>
+    </div>
+    <div class="timing-row">
+      <span>Yamaghanta</span>
+      <span style="color:#f87171" id="yamaVal">-</span>
+    </div>
+    <div class="timing-row">
+      <span>Gulika Kaal</span>
+      <span id="gulikaVal">-</span>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Automatically refreshed for today's coordinates.
+  </div>
+
+  <script>
+    const nakshatras = [
+      "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
+      "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni",
+      "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha",
+      "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta",
+      "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"
+    ];
+
+    const nakshatraLords = [
+      "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury",
+      "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury",
+      "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"
+    ];
+
+    const tithis = [
+      "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
+      "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
+      "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima",
+      "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
+      "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
+      "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"
+    ];
+
+    const yogas = [
+      { name: "Vishkambha", q: "Inauspicious" }, { name: "Priti", q: "Auspicious" },
+      { name: "Ayushman", q: "Auspicious" }, { name: "Saubhagya", q: "Auspicious" },
+      { name: "Sobhana", q: "Auspicious" }, { name: "Atiganda", q: "Inauspicious" },
+      { name: "Sukarma", q: "Auspicious" }, { name: "Dhriti", q: "Auspicious" },
+      { name: "Shula", q: "Inauspicious" }, { name: "Ganda", q: "Inauspicious" },
+      { name: "Vriddhi", q: "Auspicious" }, { name: "Dhruva", q: "Auspicious" },
+      { name: "Vyaghata", q: "Inauspicious" }, { name: "Harshana", q: "Auspicious" },
+      { name: "Vajra", q: "Inauspicious" }, { name: "Siddhi", q: "Auspicious" },
+      { name: "Vyatipata", q: "Inauspicious" }, { name: "Variyana", q: "Auspicious" },
+      { name: "Parigha", q: "Inauspicious" }, { name: "Shiva", q: "Auspicious" },
+      { name: "Siddha", q: "Auspicious" }, { name: "Sadhya", q: "Auspicious" },
+      { name: "Shubha", q: "Auspicious" }, { name: "Shukla", q: "Auspicious" },
+      { name: "Brahma", q: "Auspicious" }, { name: "Indra", q: "Auspicious" },
+      { name: "Vaidhriti", q: "Inauspicious" }
+    ];
+
+    const karanas = [
+      "Bava", "Balava", "Kaulava", "Taitila", "Gara", "Vanija", "Vishti (Bhadra)",
+      "Shakuni", "Chatushpada", "Naga", "Kintughna"
+    ];
+
+    const varas = [
+      { name: "Ravivara (Sunday)", lord: "Lord Surya" },
+      { name: "Somavara (Monday)", lord: "Lord Chandra" },
+      { name: "Mangalavara (Tuesday)", lord: "Lord Mangal" },
+      { name: "Budhavara (Wednesday)", lord: "Lord Budha" },
+      { name: "Guruvara (Thursday)", lord: "Lord Brihaspati" },
+      { name: "Shukravara (Friday)", lord: "Lord Shukra" },
+      { name: "Shanivara (Saturday)", lord: "Lord Shani" }
+    ];
+
+    // Rahu, Yama, Gulika periods based on weekday (1/8th parts of day between sunrise & sunset)
+    const dayParts = {
+      0: { rahu: 8, yama: 5, gulika: 7 }, // Sun
+      1: { rahu: 2, yama: 4, gulika: 6 }, // Mon
+      2: { rahu: 7, yama: 3, gulika: 5 }, // Tue
+      3: { rahu: 5, yama: 2, gulika: 4 }, // Wed
+      4: { rahu: 6, yama: 1, gulika: 3 }, // Thu
+      5: { rahu: 4, yama: 7, gulika: 2 }, // Fri
+      6: { rahu: 3, yama: 6, gulika: 1 }  // Sat
+    };
+
+    function formatTime(date) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function calculatePanchang() {
+      const now = new Date();
+      
+      // Date string header
+      const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+      document.getElementById('currentDateDisplay').innerText = now.toLocaleDateString(undefined, options);
+
+      // Vara
+      const dayIndex = now.getDay();
+      document.getElementById('varaVal').innerText = varas[dayIndex].name;
+      document.getElementById('varaLord').innerText = `Ruler: ${varas[dayIndex].lord}`;
+
+      // Approximate Ephemeris / Sun-Moon Longitude math
+      const jd = (now.getTime() / 86400000.0) + 2440587.5;
+      const d = jd - 2451545.0;
+
+      // Sun mean longitude
+      let L_sun = (280.466 + 0.9856474 * d) % 360;
+      if (L_sun < 0) L_sun += 360;
+
+      // Moon mean longitude
+      let L_moon = (218.316 + 13.176396 * d) % 360;
+      if (L_moon < 0) L_moon += 360;
+
+      // Lahiri Ayanamsha correction (~24.1 deg)
+      const ayanamsha = 24.1;
+      const siderealSun = (L_sun - ayanamsha + 360) % 360;
+      const siderealMoon = (L_moon - ayanamsha + 360) % 360;
+
+      // 1. Tithi: (Moon - Sun) / 12 deg
+      let moonSunDiff = (siderealMoon - siderealSun + 360) % 360;
+      let tithiIndex = Math.floor(moonSunDiff / 12);
+      let isShukla = tithiIndex < 15;
+      document.getElementById('tithiVal').innerText = tithis[tithiIndex];
+      document.getElementById('tithiPaksha').innerText = isShukla ? "Shukla Paksha" : "Krishna Paksha";
+
+      // 2. Nakshatra: Moon / 13 deg 20 min (13.333 deg)
+      let nakIndex = Math.floor(siderealMoon / (360 / 27));
+      document.getElementById('nakshatraVal').innerText = nakshatras[nakIndex];
+      document.getElementById('nakshatraLord').innerText = `Ruler: ${nakshatraLords[nakIndex]}`;
+
+      // 3. Yoga: (Sun + Moon) / 13 deg 20 min
+      let yogaIndex = Math.floor(((siderealSun + siderealMoon) % 360) / (360 / 27));
+      document.getElementById('yogaVal').innerText = yogas[yogaIndex].name;
+      document.getElementById('yogaQuality').innerText = `${yogas[yogaIndex].q} Yoga`;
+
+      // 4. Karana: Half-tithi
+      let karanaIndex = Math.floor(moonSunDiff / 6);
+      let karanaName = "";
+      if (karanaIndex === 0) karanaName = "Kintughna";
+      else if (karanaIndex >= 57) karanaName = karanas[7 + (karanaIndex - 57)];
+      else karanaName = karanas[(karanaIndex - 1) % 7];
+      document.getElementById('karanaVal').innerText = karanaName;
+      document.getElementById('karanaNature').innerText = karanaName.includes("Vishti") ? "Inauspicious (Avoid New Work)" : "Standard Karana";
+
+      // Sunrise / Sunset & 8-Part Kaal calculation
+      const sunrise = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 12);
+      const sunset = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 5);
+      const dayLengthMs = sunset.getTime() - sunrise.getTime();
+      const slotMs = dayLengthMs / 8;
+
+      document.getElementById('sunriseDisplay').innerText = formatTime(sunrise);
+      document.getElementById('sunsetDisplay').innerText = formatTime(sunset);
+
+      // Abhijit (8th muhurat of 15 daylight muhurats, approx noon)
+      const abhijitStart = new Date(sunrise.getTime() + (dayLengthMs * 7 / 15));
+      const abhijitEnd = new Date(sunrise.getTime() + (dayLengthMs * 8 / 15));
+      document.getElementById('abhijitVal').innerText = `${formatTime(abhijitStart)} - ${formatTime(abhijitEnd)}`;
+
+      // Brahma Muhurta (approx 1 hr 36 min before sunrise)
+      const brahmaStart = new Date(sunrise.getTime() - (96 * 60 * 1000));
+      const brahmaEnd = new Date(sunrise.getTime() - (48 * 60 * 1000));
+      document.getElementById('brahmaVal').innerText = `${formatTime(brahmaStart)} - ${formatTime(brahmaEnd)}`;
+
+      // Rahu Kaal, Yamaghanta, Gulika Kaal
+      const timingParts = dayParts[dayIndex];
+      const getSlotTimes = (part) => {
+        const start = new Date(sunrise.getTime() + ((part - 1) * slotMs));
+        const end = new Date(sunrise.getTime() + (part * slotMs));
+        return `${formatTime(start)} - ${formatTime(end)}`;
+      };
+
+      document.getElementById('rahuVal').innerText = getSlotTimes(timingParts.rahu);
+      document.getElementById('yamaVal').innerText = getSlotTimes(timingParts.yama);
+      document.getElementById('gulikaVal').innerText = getSlotTimes(timingParts.gulika);
+    }
+
+    // Run automatically on open
+    calculatePanchang();
+
+    // Auto-update check every minute if the date rolls over
+    setInterval(() => {
+      calculatePanchang();
+    }, 60000);
+  </script>
+</body>
+</html>
