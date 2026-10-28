@@ -3,33 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Siddhanta Jyotish Pro</title>
+  <title>Siddhanta Jyotish & Kriya Pro</title>
 
   <!-- iOS PWA Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Jyotish Pro">
-  <meta name="theme-color" content="#070a10">
+  <meta name="apple-mobile-web-app-title" content="Jyotish Kriya">
+  <meta name="theme-color" content="#05070d">
 
-  <!-- High-Precision VSOP87 / NOVAS Astronomy Engine -->
+  <!-- Astronomy Engine CDN (VSOP87 / NOVAS 3.1 C-level precision) -->
   <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
 
   <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='115' fill='%23070a10'/%3E%3Ccircle cx='256' cy='256' r='210' fill='none' stroke='%23f59e0b' stroke-width='14' stroke-dasharray='10 8'/%3E%3Ctext x='256' y='335' font-size='260' text-anchor='middle' fill='%23fbbf24' font-family='serif'%3E%E0%A5%90%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%2305070d'/%3E%3Ccircle cx='256' cy='256' r='210' fill='none' stroke='%23f59e0b' stroke-width='14' stroke-dasharray='10 8' opacity='0.7'/%3E%3Ctext x='256' y='335' font-size='250' text-anchor='middle' fill='%23fbbf24' font-family='serif'%3E%E0%A5%90%3C/text%3E%3C/svg%3E">
 
   <style>
     :root {
-      --bg: #070a10;
-      --card-bg: rgba(17, 23, 37, 0.88);
-      --card-border: rgba(255, 255, 255, 0.08);
+      --bg: #05070d;
+      --card-bg: rgba(13, 18, 30, 0.78);
+      --card-border: rgba(245, 158, 11, 0.22);
+      --card-border-sub: rgba(255, 255, 255, 0.07);
       --accent: #f59e0b;
-      --accent-soft: rgba(245, 158, 11, 0.15);
-      --gold-grad: linear-gradient(135deg, #fde68a, #f59e0b);
+      --accent-glow: rgba(245, 158, 11, 0.35);
+      --gold-grad: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
       --danger: #f87171;
-      --success: #34d399;
       --info: #60a5fa;
       --purple: #c084fc;
-      --text-main: #f3f4f6;
+      --text-main: #f9fafb;
       --text-sub: #9ca3af;
     }
 
@@ -38,34 +40,41 @@
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
     }
 
     body {
       background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 55%),
+        radial-gradient(circle at 85% 30%, rgba(192, 132, 252, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 10% 70%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
       color: var(--text-main);
-      padding: env(safe-area-inset-top) 14px calc(env(safe-area-inset-bottom) + 92px) 14px;
+      padding: env(safe-area-inset-top) 14px calc(env(safe-area-inset-bottom) + 98px) 14px;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     header {
-      padding: 10px 0 12px 0;
+      padding: 12px 2px 14px 2px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
-      background: rgba(7, 10, 16, 0.9);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(5, 7, 13, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       z-index: 50;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 12px;
     }
 
     .header-title h1 {
       font-size: 20px;
       font-weight: 800;
+      letter-spacing: -0.4px;
       background: var(--gold-grad);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -74,6 +83,8 @@
     .header-title p {
       font-size: 11px;
       color: var(--text-sub);
+      font-weight: 500;
+      margin-top: 1px;
     }
 
     .top-actions {
@@ -83,32 +94,56 @@
 
     .icon-btn {
       font-size: 11px;
-      padding: 6px 10px;
-      background: var(--accent-soft);
+      padding: 6px 11px;
+      background: rgba(245, 158, 11, 0.12);
       color: var(--accent);
-      border-radius: 10px;
+      border-radius: 12px;
       font-weight: 600;
       border: 1px solid rgba(245, 158, 11, 0.35);
       cursor: pointer;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .icon-btn:active {
+      transform: scale(0.96);
+      background: rgba(245, 158, 11, 0.25);
     }
 
     .view-section {
       display: none;
       flex-direction: column;
       gap: 12px;
+      animation: fadeIn 0.25s ease forwards;
     }
+    .view-section.active { display: flex; }
 
-    .view-section.active {
-      display: flex;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .card {
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 14px;
-      box-shadow: 0 8px 26px rgba(0,0,0,0.5);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--card-border-sub);
+      border-radius: 20px;
+      padding: 15px;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.45);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
     }
 
     .section-header {
@@ -122,25 +157,32 @@
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.9px;
       color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .input-field {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
+      border: 1px solid rgba(255, 255, 255, 0.09);
       color: #fff;
-      padding: 7px 10px;
-      border-radius: 10px;
+      padding: 7px 11px;
+      border-radius: 12px;
       font-size: 12px;
       outline: none;
       width: 100%;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--accent);
     }
 
     .tab-group {
       display: flex;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
       padding: 3px;
       gap: 2px;
     }
@@ -151,67 +193,68 @@
       color: var(--text-sub);
       font-size: 11px;
       font-weight: 600;
-      padding: 5px 9px;
-      border-radius: 7px;
+      padding: 5px 10px;
+      border-radius: 9px;
       cursor: pointer;
+      transition: all 0.2s;
     }
-
     .tab-btn.active {
-      background: var(--accent);
+      background: var(--gold-grad);
       color: #000;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
     }
 
     .anga-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 9px;
     }
 
     .anga-item {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.025);
       border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 10px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      transition: transform 0.15s ease;
     }
-
     .anga-item.full-width { grid-column: span 2; }
-    .anga-label { font-size: 10px; text-transform: uppercase; color: var(--text-sub); letter-spacing: 0.4px; }
+    .anga-label { font-size: 10px; text-transform: uppercase; color: var(--text-sub); letter-spacing: 0.5px; }
     .anga-val { font-size: 14px; font-weight: 700; color: #fff; margin-top: 3px; }
     .anga-desc { font-size: 11px; color: var(--accent); margin-top: 2px; }
 
-    /* Kundli SVG */
+    /* Kundli SVG Container */
     .kundli-wrap {
       width: 100%;
       max-width: 330px;
       margin: 4px auto 10px auto;
       aspect-ratio: 1 / 1;
-      background: rgba(9, 12, 20, 0.92);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      border-radius: 14px;
+      background: rgba(8, 11, 18, 0.95);
+      border: 1.5px solid rgba(245, 158, 11, 0.45);
+      border-radius: 18px;
       padding: 6px;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.8), 0 6px 20px rgba(0,0,0,0.5);
     }
 
     .graha-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 11px;
+      margin-top: 4px;
     }
-
     .graha-table th, .graha-table td {
-      padding: 6px 3px;
+      padding: 7px 4px;
       text-align: left;
       border-bottom: 1px solid rgba(255,255,255,0.05);
     }
+    .graha-table th { color: var(--text-sub); font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    .graha-table th { color: var(--text-sub); font-size: 9px; text-transform: uppercase; }
-
-    /* Lo Shu Grid */
+    /* Lo Shu 3x3 Grid */
     .loshu-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      max-width: 260px;
-      margin: 8px auto;
+      max-width: 270px;
+      margin: 10px auto;
     }
 
     .loshu-cell {
@@ -225,15 +268,15 @@
       justify-content: center;
       padding: 6px;
       text-align: center;
+      transition: all 0.2s ease;
     }
-
     .loshu-cell.present {
       background: rgba(245, 158, 11, 0.16);
       border-color: rgba(245, 158, 11, 0.55);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
     }
-
-    .loshu-num { font-size: 20px; font-weight: 800; color: #fbbf24; }
-    .loshu-cell.missing .loshu-num { color: rgba(255,255,255,0.16); }
+    .loshu-num { font-size: 21px; font-weight: 800; color: #fbbf24; }
+    .loshu-cell.missing .loshu-num { color: rgba(255,255,255,0.15); }
     .loshu-meta { font-size: 9px; color: var(--text-sub); margin-top: 2px; }
 
     /* Numerology Cards */
@@ -242,81 +285,80 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
-
     .num-card {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.025);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 9px 6px;
+      border-radius: 14px;
+      padding: 10px 6px;
       text-align: center;
     }
-
-    .num-val { font-size: 19px; font-weight: 800; color: #fbbf24; margin: 2px 0; }
+    .num-val { font-size: 20px; font-weight: 800; color: #fbbf24; margin: 2px 0; }
     .num-sub { font-size: 9px; color: var(--text-sub); }
 
-    /* Rows */
+    /* Row styling */
     .chog-row, .timing-row, .dasha-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 10px;
-      border-radius: 10px;
-      margin-bottom: 4px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      margin-bottom: 5px;
       background: rgba(255, 255, 255, 0.025);
       font-size: 12px;
     }
-
     .chog-row.current-slot, .dasha-row.active-dasha {
       background: rgba(245, 158, 11, 0.16);
       border: 1px solid rgba(245, 158, 11, 0.45);
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.12);
     }
-
     .now-pill {
       font-size: 9px;
       background: var(--accent);
       color: #000;
-      padding: 1px 5px;
-      border-radius: 5px;
+      padding: 2px 6px;
+      border-radius: 6px;
       font-weight: 700;
       margin-left: 5px;
     }
 
-    .tag-good { color: var(--success); font-weight: 600; }
+    .tag-good { color: var(--emerald); font-weight: 600; }
     .tag-bad { color: var(--danger); font-weight: 600; }
     .tag-neutral { color: var(--info); font-weight: 600; }
 
-    /* Master End-of-Screen Ananda & Mantra Synthesis Card */
+    /* Persistent Master Ananda Card */
     .ananda-master-card {
-      margin-top: 12px;
+      margin-top: 14px;
       border: 1.5px solid rgba(245, 158, 11, 0.55);
-      background: linear-gradient(145deg, rgba(245, 158, 11, 0.14), rgba(15, 23, 42, 0.95));
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.12);
+      background: linear-gradient(145deg, rgba(245, 158, 11, 0.14), rgba(13, 18, 30, 0.96));
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.15);
+      position: relative;
     }
 
     .focus-pill-large {
       display: inline-block;
-      padding: 4px 12px;
+      padding: 4px 13px;
       border-radius: 20px;
       background: var(--gold-grad);
       color: #000;
       font-weight: 800;
-      font-size: 13px;
+      font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.6px;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
     }
 
     .mantra-box {
-      margin-top: 10px;
+      margin-top: 12px;
       background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(251, 191, 36, 0.3);
-      border-radius: 14px;
-      padding: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.28);
+      border-radius: 16px;
+      padding: 14px;
     }
 
     .sanskrit-text {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       color: #fde68a;
       line-height: 1.45;
@@ -330,13 +372,92 @@
       font-style: italic;
     }
 
+    /* Kriya & Merudanda Breath Track */
+    .kriya-box {
+      margin-top: 12px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .chakras-track-wrap {
+      margin: 12px 0 8px 0;
+      position: relative;
+    }
+
+    .chakra-dots {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      padding: 0 4px;
+    }
+
+    .chakra-node {
+      font-size: 9px;
+      color: var(--text-sub);
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .chakra-node.active-node {
+      color: #fde68a;
+      transform: scale(1.15);
+    }
+
+    .spine-track {
+      width: 100%;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .spine-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ef4444 0%, #f97316 20%, #eab308 40%, #10b981 60%, #06b6d4 80%, #a855f7 100%);
+      border-radius: 999px;
+      transition: width 0.12s linear;
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.7);
+    }
+
+    .mala-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      background: rgba(245, 158, 11, 0.18);
+      color: #fde68a;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    .mala-btn:active {
+      transform: scale(0.98);
+      background: rgba(245, 158, 11, 0.32);
+    }
+
     /* Forecast Horizon Cards */
     .horizon-card {
       border-left: 3.5px solid var(--accent);
       background: rgba(255, 255, 255, 0.025);
-      border-radius: 0 14px 14px 0;
-      padding: 12px;
+      border-radius: 0 16px 16px 0;
+      padding: 13px;
       margin-bottom: 10px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-right: 1px solid rgba(255,255,255,0.04);
     }
 
     .horizon-header {
@@ -347,29 +468,30 @@
     }
 
     .one-word-badge {
-      background: rgba(245, 158, 11, 0.2);
+      background: rgba(245, 158, 11, 0.22);
       border: 1px solid rgba(245, 158, 11, 0.45);
       color: #fde68a;
       font-size: 10px;
       font-weight: 800;
-      padding: 2px 8px;
+      padding: 2px 9px;
       border-radius: 12px;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* Bottom iOS Navigation Bar */
+    /* Bottom iOS 5-Tab Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(9, 13, 22, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255,255,255,0.08);
+      background: rgba(8, 11, 19, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(255,255,255,0.09);
       display: flex;
       justify-content: space-around;
-      padding: 8px 2px calc(env(safe-area-inset-bottom) + 6px) 2px;
+      padding: 8px 3px calc(env(safe-area-inset-bottom) + 6px) 3px;
       z-index: 100;
     }
 
@@ -380,24 +502,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 3px;
       font-size: 9px;
       font-weight: 600;
       cursor: pointer;
       flex: 1;
+      transition: color 0.2s;
     }
-
-    .nav-item.active { color: var(--accent); }
-    .nav-icon { font-size: 16px; }
+    .nav-item.active {
+      color: var(--accent);
+    }
+    .nav-icon { font-size: 17px; }
 
     .ai-response {
       margin-top: 10px;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.35);
+      padding: 13px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(245, 158, 11, 0.25);
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.6;
       color: #e5e7eb;
       white-space: pre-wrap;
     }
@@ -413,21 +537,30 @@
     .chip {
       white-space: nowrap;
       font-size: 11px;
-      padding: 5px 10px;
-      border-radius: 15px;
+      padding: 6px 12px;
+      border-radius: 16px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: #d1d5db;
       cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .chip:active {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--accent);
     }
   </style>
 </head>
 <body>
 
+  <!-- Hidden native HTML5 audio for iOS MediaSession lockscreen background continuity -->
+  <audio id="iosBackgroundAudio" loop preload="auto" playsinline style="display:none;"></audio>
+
   <header>
     <div class="header-title">
       <h1>Siddhanta Jyotish Pro</h1>
-      <p id="currentDateDisplay">True Chitrapaksha Lahiri Ephemeris</p>
+      <p id="currentDateDisplay">True Chitrapaksha Lahiri • Svara & Kriya</p>
     </div>
     <div class="top-actions">
       <button class="icon-btn" onclick="requestLocation()" id="gpsBtn">📍 GPS</button>
@@ -435,7 +568,7 @@
     </div>
   </header>
 
-  <!-- ==================== TAB 1: DRIK PANCHANG ==================== -->
+  <!-- ==================== TAB 1: DRIK PANCHANG & AMRIT KALA ==================== -->
   <div class="view-section active" id="view-panchang">
     <div class="card">
       <div style="display: flex; gap: 8px; margin-bottom: 10px;">
@@ -452,12 +585,12 @@
           <div id="sunsetDisplay" style="font-size: 14px; font-weight: 700; color: #fbbf24;">--:--</div>
         </div>
         <div style="flex: 1;">
-          <div style="font-size: 9px; color: var(--text-sub);">ACTIVE HORA</div>
+          <div style="font-size: 9px; color: var(--text-sub);">PLANETARY HORA</div>
           <div id="activeHoraDisplay" style="font-size: 13px; font-weight: 700; color: #34d399;">--</div>
         </div>
         <div style="flex: 1;">
-          <div style="font-size: 9px; color: var(--text-sub);">AYANAMSHA</div>
-          <div id="ayanamshaDisplay" style="font-size: 12px; font-weight: 600; color: #d1d5db; margin-top: 2px;">--</div>
+          <div style="font-size: 9px; color: var(--text-sub);">SVARA NADI</div>
+          <div id="activeSvaraDisplay" style="font-size: 12px; font-weight: 700; color: #c084fc; margin-top: 2px;">--</div>
         </div>
       </div>
     </div>
@@ -486,6 +619,7 @@
     <div class="card">
       <div class="section-header">
         <div class="section-title">Pancha-Anga (Exact Drik Timings)</div>
+        <span style="font-size: 10px; color: var(--text-sub);" id="ayanamshaDisplay">Lahiri</span>
       </div>
       <div class="anga-grid">
         <div class="anga-item">
@@ -516,43 +650,48 @@
       </div>
     </div>
 
+    <!-- Kriya Yoga & Khechari Sacred Windows -->
+    <div class="card">
+      <div class="section-header">
+        <div class="section-title" style="color:#34d399;">🧘‍♂️ Kriya, Khechari & Sushumna Kalas</div>
+        <span style="font-size:10px; color:var(--accent);" id="khechariLiveStatus">Check Window</span>
+      </div>
+      <div class="timing-row">
+        <span><strong>Nakshatra Amrit Kala</strong> <small style="color:var(--emerald)">(Khechari Soma Nectar)</small></span>
+        <span class="tag-good" id="amritKalaVal">-</span>
+      </div>
+      <div class="timing-row">
+        <span><strong>Brahma Muhurta</strong> <small style="color:var(--text-sub)">(Sushumna & So-Ham)</small></span>
+        <span class="tag-good" id="brahmaVal">-</span>
+      </div>
+      <div class="timing-row">
+        <span><strong>Abhijit Muhurat</strong> <small style="color:var(--text-sub)">(Solar Kutastha Focus)</small></span>
+        <span class="tag-good" id="abhijitVal">-</span>
+      </div>
+      <div class="timing-row">
+        <span><strong>Pratah / Sayam Sandhya</strong> <small style="color:var(--text-sub)">(Hamsa Pratyahara)</small></span>
+        <span class="tag-neutral" id="sandhyaVal">-</span>
+      </div>
+      <div class="timing-row">
+        <span>Rahu Kaal <small style="color:var(--danger)">(Avoid Material Starts; Inward Japa Only)</small></span>
+        <span class="tag-bad" id="rahuVal">-</span>
+      </div>
+      <div class="timing-row">
+        <span>Yamaghanta / Gulika Kaal</span>
+        <span style="color:var(--text-sub); font-size:11px;" id="yamaGulikaVal">-</span>
+      </div>
+    </div>
+
     <!-- Choghadiya -->
     <div class="card">
       <div class="section-header">
-        <div class="section-title">Choghadiya Muhurat</div>
+        <div class="section-title">Choghadiya Muhurat (Amrit & Shubh Slots)</div>
         <div class="tab-group">
           <button class="tab-btn active" id="tabDay" onclick="switchChoghadiya('day')">☀️ Day</button>
           <button class="tab-btn" id="tabNight" onclick="switchChoghadiya('night')">🌙 Night</button>
         </div>
       </div>
       <div id="choghadiyaList"></div>
-    </div>
-
-    <!-- Muhurat & Kaal -->
-    <div class="card">
-      <div class="section-header">
-        <div class="section-title">Shubh & Varjya Kaal</div>
-      </div>
-      <div class="timing-row">
-        <span>Abhijit Muhurat <small style="color:var(--text-sub)">(Victory)</small></span>
-        <span class="tag-good" id="abhijitVal">-</span>
-      </div>
-      <div class="timing-row">
-        <span>Brahma Muhurta <small style="color:var(--text-sub)">(Dhyana & Sadhana)</small></span>
-        <span class="tag-good" id="brahmaVal">-</span>
-      </div>
-      <div class="timing-row">
-        <span>Rahu Kaal <small style="color:var(--danger)">(Avoid New Starts)</small></span>
-        <span class="tag-bad" id="rahuVal">-</span>
-      </div>
-      <div class="timing-row">
-        <span>Yamaghanta</span>
-        <span style="color:#f87171" id="yamaVal">-</span>
-      </div>
-      <div class="timing-row">
-        <span>Gulika Kaal</span>
-        <span id="gulikaVal">-</span>
-      </div>
     </div>
   </div>
 
@@ -565,11 +704,11 @@
       </div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
         <div>
-          <label style="font-size: 9px; color: var(--text-sub);">BIRTH DATE</label>
+          <label style="font-size: 9px; color: var(--text-sub); font-weight:600;">BIRTH DATE</label>
           <input type="date" id="dobInput" class="input-field" value="1999-01-06" onchange="saveBirthDetails()">
         </div>
         <div>
-          <label style="font-size: 9px; color: var(--text-sub);">BIRTH TIME</label>
+          <label style="font-size: 9px; color: var(--text-sub); font-weight:600;">BIRTH TIME</label>
           <input type="time" id="tobInput" class="input-field" value="08:30" onchange="saveBirthDetails()">
         </div>
       </div>
@@ -583,12 +722,12 @@
           <button class="tab-btn" id="modeGochar" onclick="setChartMode('gochar')">Gochar</button>
         </div>
         <div class="tab-group">
-          <button class="tab-btn active" id="styleNorth" onclick="setChartStyle('north')">N</button>
-          <button class="tab-btn" id="styleSouth" onclick="setChartStyle('south')">S</button>
+          <button class="tab-btn active" id="styleNorth" onclick="setChartStyle('north')">North</button>
+          <button class="tab-btn" id="styleSouth" onclick="setChartStyle('south')">South</button>
         </div>
       </div>
 
-      <div style="font-size: 11px; color: var(--accent); margin-bottom: 6px; text-align: center;" id="lagnaBanner">-</div>
+      <div style="font-size: 11px; color: var(--accent); margin-bottom: 6px; text-align: center; font-weight:600;" id="lagnaBanner">-</div>
       <div class="kundli-wrap" id="kundliContainer"></div>
     </div>
 
@@ -624,7 +763,7 @@
     <div class="card">
       <div class="section-header">
         <div class="section-title">Vedic Sankhya & Temporal Matrix</div>
-        <span style="font-size: 10px; color: var(--accent);" id="karmicDebtBadge">No Karmic Debt</span>
+        <span style="font-size: 10px; color: var(--accent);" id="karmicDebtBadge">Pure Compound</span>
       </div>
       <div class="num-grid">
         <div class="num-card">
@@ -663,7 +802,6 @@
       </div>
     </div>
 
-    <!-- Vedic Lo-Shu Grid & 8 Planes -->
     <div class="card">
       <div class="section-header">
         <div class="section-title">Vedic Lo-Shu Chakra & 8 Planes</div>
@@ -673,7 +811,6 @@
       <div style="margin-top: 10px; font-size: 12px; line-height: 1.55;" id="loshuPlanesSummary"></div>
     </div>
 
-    <!-- 4 Pinnacle Life Cycles -->
     <div class="card">
       <div class="section-header">
         <div class="section-title">4 Life Pinnacle & Challenge Cycles</div>
@@ -681,10 +818,9 @@
       <div id="pinnaclesContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
     </div>
 
-    <!-- Chaldean Name & Brand Vibration Analyzer -->
     <div class="card">
       <div class="section-header">
-        <div class="section-title">Chaldean Name & Vibration Analyzer</div>
+        <div class="section-title">Chaldean Name & Mantra Vibration Analyzer</div>
       </div>
       <input type="text" id="chaldeanNameInput" class="input-field" value="Mitesh Patil" placeholder="Enter Name, Business, or Mantra..." oninput="computeChaldeanName()">
       <div class="anga-grid" style="margin-top: 10px;">
@@ -702,7 +838,6 @@
       <div id="chaldeanAncientMeaning" style="margin-top: 8px; font-size: 11px; color: #d1d5db; line-height: 1.5;"></div>
     </div>
 
-    <!-- Missing Number Remedies -->
     <div class="card">
       <div class="section-header">
         <div class="section-title">Sankhya Shastra Affinity & Remedies</div>
@@ -715,11 +850,11 @@
   <div class="view-section" id="view-suggestions">
     <div class="card">
       <div class="section-header">
-        <div class="section-title">🎯 Multi-Horizon Vedic & Sankhya Directives</div>
-        <span style="font-size: 10px; color: var(--success);">Anchored in Inner Joy</span>
+        <div class="section-title">🎯 Multi-Horizon Vedic, Kriya & Sankhya Directives</div>
+        <span style="font-size: 10px; color: var(--emerald); font-weight:700;">Anchored in Inner Joy</span>
       </div>
       <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 12px;">
-        Synthesized from your Natal Moon, Vimshottari Dasha, Tara Bala, Chandra Bala, and Personal Year/Month/Day cycles.
+        Synthesized from your Natal Moon, Vimshottari Dasha, Tara Bala, Chandra Bala, Svara Yoga, and Personal Year/Month/Week/Day cycles.
       </p>
       <div id="timeSuggestionsContainer"></div>
     </div>
@@ -762,7 +897,7 @@
     <!-- RISHI AI (SHASTRA LLM) -->
     <div class="card">
       <div class="section-header">
-        <div class="section-title">✨ Parashari & Global Shastra AI Acharya</div>
+        <div class="section-title">✨ Parashari, Kriya & Global Shastra AI Acharya</div>
         <button class="icon-btn" onclick="toggleApiKeyBox()">🔑 API Key</button>
       </div>
 
@@ -774,23 +909,23 @@
       </div>
 
       <div class="chip-row">
-        <span class="chip" onclick="askPreset('Synthesize my D1 Lagna, D9 Navamsha, active Dasha, and today\'s Tara Bala to guide my focus on Inner Joy (Ananda) today.')">🧘‍♂️ Inner Joy & Ananda Synthesis</span>
+        <span class="chip" onclick="askPreset('Guide my Kriya Yoga, Khechari Mudra, and So-Ham / Hamsa Japa today based on today\'s Nakshatra Amrit Kala, Tithi, and my Janma Rashi.')">🧘‍♂️ Today's Kriya & Khechari Sadhana</span>
         <span class="chip" onclick="askPreset('Compare my Vedic Janma Kundli with my Chinese BaZi Four Pillars and Japanese 9-Star Ki. Where do all three systems agree on my highest strength?')">🌏 Vedic + Chinese + Japanese Audit</span>
         <span class="chip" onclick="askPreset('Give me a deep Sankhya Shastra breakdown of my Lo-Shu Grid, Mulank, Bhagyank, and Personal Day with specific Vedic Beej Mantras.')">🔢 Deep Numerology & Mantra Prescription</span>
       </div>
 
       <div style="display: flex; gap: 6px;">
-        <input type="text" id="aiPromptInput" class="input-field" placeholder="Ask about your chart, muhurat, dasha, or mantra...">
+        <input type="text" id="aiPromptInput" class="input-field" placeholder="Ask about Kriya timing, Kundli, Dasha, or Mantra...">
         <button class="icon-btn" onclick="askJyotishLLM()" style="padding: 0 14px;">Ask</button>
       </div>
 
       <div class="ai-response" id="aiResponseBox">
-        Your complete astronomical and numerological profile (D1, D9, Vimshottari Dasha, Lo-Shu Grid, BaZi, 9-Star Ki, and today's Drik Panchang) is automatically linked to every consultation.
+        Your complete astronomical, Kriya Svara, and numerological profile (D1, D9, Vimshottari Dasha, Amrit Kala, Lo-Shu Grid, BaZi, and 9-Star Ki) is automatically linked to every consultation.
       </div>
     </div>
   </div>
 
-  <!-- ==================== PERSISTENT END-OF-SCREEN ANANDA & VEDIC MANTRA ENGINE ==================== -->
+  <!-- ==================== PERSISTENT END-OF-SCREEN ANANDA, KRIYA & VEDIC MANTRA ENGINE ==================== -->
   <div class="ananda-master-card">
     <div class="section-header" style="margin-bottom: 8px;">
       <div class="section-title" style="color: #fde68a;">✨ Ultimate Scriptural Evaluation & Inner Joy Anchor</div>
@@ -798,32 +933,72 @@
     </div>
 
     <div style="font-size: 12px; color: #e5e7eb; line-height: 1.5; margin-bottom: 8px;" id="masterSituationEval">
-      Evaluating planetary Hora, Tara Bala, Chandra Bala, and Sankhya resonance...
+      Evaluating planetary Hora, Tara Bala, Chandra Bala, Svara Nadi, and Amrit Kala...
     </div>
 
     <div class="anga-grid">
       <div class="anga-item">
-        <div class="anga-label">Soul Emotion to Cultivate</div>
-        <div class="anga-val" id="masterEmotionFocus" style="color: #34d399; font-size: 13px;">Sahaja Ananda (Spontaneous Joy)</div>
-        <div class="anga-desc" id="masterBreathMudra">Dhyana Mudra • Left palm over right</div>
+        <div class="anga-label">Ajapa Japa & Mudra</div>
+        <div class="anga-val" id="masterAjapaMode" style="color: #34d399; font-size: 13px;">So-Ham (सोऽहम्)</div>
+        <div class="anga-desc" id="masterBreathMudra">Khechari + Dhyana Mudra</div>
       </div>
       <div class="anga-item">
-        <div class="anga-label">Temporal Alignment</div>
+        <div class="anga-label">Amrit Kala & Hora</div>
         <div class="anga-val" id="masterCycleAlign" style="font-size: 13px;">-</div>
         <div class="anga-desc" id="masterHoraLord">-</div>
       </div>
     </div>
 
+    <!-- Continuous Non-Stop So-Ham / Hamsa Audio + Visual Merudanda Kriya Loop -->
+    <div class="kriya-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
+        <span style="font-size:10px; font-weight:800; color:#34d399; text-transform:uppercase;" id="kriyaPhaseTitle">
+          Continuous So-Ham / Hamsa Kriya Loop
+        </span>
+        <div style="display:flex; gap:6px;">
+          <button class="icon-btn" id="pacerToggleBtn" onclick="toggleContinuousSoham()" style="padding:4px 10px; font-size:11px;">▶ Start So-Ham Loop</button>
+          <button class="icon-btn" id="droneToggleBtn" onclick="toggleOmDrone()" style="padding:4px 9px; font-size:11px;">🔔 136.1Hz Om</button>
+        </div>
+      </div>
+
+      <!-- 7 Chakras Visualizer over the Merudanda (Spine) -->
+      <div class="chakras-track-wrap">
+        <div class="chakra-dots">
+          <div class="chakra-node" id="chk1"><span>🔴</span><span>Muladhara</span></div>
+          <div class="chakra-node" id="chk2"><span>🟠</span><span>Swadh</span></div>
+          <div class="chakra-node" id="chk3"><span>🟡</span><span>Manipura</span></div>
+          <div class="chakra-node" id="chk4"><span>🟢</span><span>Anahata</span></div>
+          <div class="chakra-node" id="chk5"><span>🔵</span><span>Vishuddha</span></div>
+          <div class="chakra-node" id="chk6"><span>🟣</span><span>Ajna</span></div>
+          <div class="chakra-node" id="chk7"><span>⚪</span><span>Kutastha</span></div>
+        </div>
+        <div class="spine-track">
+          <div class="spine-fill" id="spineFillBar"></div>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#d1d5db;">
+        <span id="kriyaBreathInstruction">Continues playing even when your iPhone screen is locked</span>
+        <span style="color:#fbbf24; font-weight:700; white-space:nowrap; margin-left:6px;" id="khechariWindowBadge">Amrit Kala</span>
+      </div>
+    </div>
+
+    <!-- Prescribed Vedic Beej Mantra + Interactive 27/108 Mala Counter -->
     <div class="mantra-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
         <span style="font-size: 10px; text-transform: uppercase; color: var(--text-sub); font-weight: 700;" id="masterMantraSource">Tantrokta & Puranic Graha Beej Mantra</span>
-        <span style="font-size: 10px; color: #fbbf24; font-weight: 700;" id="masterJapaCount">Japa: 27 or 108x</span>
+        <span style="font-size: 10px; color: #fbbf24; font-weight: 700; cursor: pointer;" onclick="resetMalaCount()">Reset Mala ↺</span>
       </div>
       <div class="sanskrit-text" id="masterMantraSanskrit">ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः</div>
       <div class="translit-text" id="masterMantraTranslit">Aum Bhrām Bhrīm Bhraum Sah Budhāya Namah</div>
       <div style="font-size: 11px; color: #d1d5db; margin-top: 5px; line-height: 1.45;" id="masterMantraEffect">
         Harmonizes Budha (intellect) and awakens serene, unshakable inner joy (Atma-Prasada).
       </div>
+
+      <button class="mala-btn" onclick="incrementMalaBead()">
+        <span>📿 Tap to count Japa (or auto-counts during So-Ham loop)</span>
+        <span id="malaCounterDisplay" style="background:#000; padding:3px 9px; border-radius:8px; color:#fbbf24;">0 / 27</span>
+      </button>
     </div>
   </div>
 
@@ -852,7 +1027,7 @@
   </nav>
 
   <script>
-    // Global State
+    // State
     let userLat = parseFloat(localStorage.getItem('panchang_lat')) || 12.9716;
     let userLon = parseFloat(localStorage.getItem('panchang_lon')) || 77.5946;
     let viewDate = new Date();
@@ -862,14 +1037,39 @@
     let choghadiyaData = { day: [], night: [] };
     let latestContextSummary = {};
 
+    // Mala & Web Audio State
+    let malaCount = parseInt(localStorage.getItem('jyotish_mala_count')) || 0;
+    let malaTarget = 27;
+    let audioCtx = null;
+    let droneOsc1 = null;
+    let droneOsc2 = null;
+    let droneGain = null;
+    let isDronePlaying = false;
+
+    // Continuous So-Ham Oscillator & Loop State
+    let isSohamRunning = false;
+    let sohamIntervalId = null;
+    let sohamStartTime = 0;
+    let lastCompletedCycleCount = 0;
+    let sohamCarrierOsc = null;
+    let sohamHarmonicOsc = null;
+    let sohamBreathGain = null;
+    let wakeLockSentinel = null;
+    let currentAjapaType = "SO-HAM";
+
     const rashis = ["Mesha", "Vrishabha", "Mithuna", "Karka", "Simha", "Kanya", "Tula", "Vrishchika", "Dhanu", "Makara", "Kumbha", "Meena"];
-    const rashiLords = ["Mangal", "Shukra", "Budha", "Chandra", "Surya", "Budha", "Shukra", "Mangal", "Guru", "Shani", "Shani", "Guru"];
     const nakshatras = [
       "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
       "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni",
       "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha",
       "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta",
       "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"
+    ];
+
+    const nakshatraAmritGhatis = [
+      42, 48, 54, 52, 38, 35, 54, 44, 56,
+      54, 44, 42, 45, 44, 38, 38, 34, 38,
+      44, 48, 44, 34, 34, 42, 40, 48, 54
     ];
 
     const dashaOrder = ["Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"];
@@ -924,7 +1124,6 @@
       { name: "Parama Mitra (9)", desc: "Supreme Grace", tag: "tag-good", word: "BLISS", emotion: "Parama Ananda (Pure Joy)" }
     ];
 
-    // Pure Vedic & Tantrokta Graha Beej Mantras
     const grahaMantras = {
       "Surya": {
         sanskrit: "ॐ ह्रां ह्रीं ह्रौं सः सूर्याय नमः",
@@ -960,38 +1159,38 @@
         sanskrit: "ॐ द्रां द्रीं द्रौं सः शुक्राय नमः",
         translit: "Aum Drām Drīm Draum Sah Śukrāya Namah",
         gayatri: "ॐ भृगुवंशजाताय विद्महे श्वेतवाहनाय धीमहि तन्नः शुक्रः प्रचोदयात्",
-        effect: "Refines Ojas and heart sensitivity, invoking Prema (divine love), beauty, and joyful ease."
+        effect: "Refines Ojas and Bindu nectar, invoking Prema (divine love), beauty, and joyful ease."
       },
       "Shani": {
         sanskrit: "ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः",
         translit: "Aum Prām Prīm Praum Sah Śanaiścarāya Namah",
         gayatri: "ॐ काकध्वजाय विद्महे खड्गहस्ताय धीमहि तन्नो मन्दः प्रचोदयात्",
-        effect: "Establishes deep meditative stillness (Dhyana), releasing attachment and mental heaviness."
+        effect: "Establishes deep meditative stillness (Kutastha Dhyana), releasing attachment and mental heaviness."
       },
       "Rahu": {
         sanskrit: "ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः",
         translit: "Aum Bhrām Bhrīm Bhraum Sah Rāhave Namah",
         gayatri: "ॐ नागध्वजाय विद्महे पद्महस्ताय धीमहि तन्नो राहुः प्रचोदयात्",
-        effect: "Cuts through illusion and overthinking, anchoring awareness in the present moment."
+        effect: "Cuts through illusion and overthinking, anchoring awareness in the present breath."
       },
       "Ketu": {
         sanskrit: "ॐ स्रां स्रीं स्रौं सः केतवे नमः",
         translit: "Aum Srām Srīm Sraum Sah Ketave Namah",
         gayatri: "ॐ अश्वध्वजाय विद्महे शूलहस्ताय धीमहि तन्नः केतुः प्रचोदयात्",
-        effect: "Unlocks Moksha-consciousness, intuitive liberation, and uncaused inner joy (Swarupa Ananda)."
+        effect: "Unlocks Moksha-consciousness, Khechari absorption, and uncaused inner joy (Swarupa Ananda)."
       }
     };
 
     const numerologyMeta = {
-      1: { planet: "Surya", lordKey: "Surya", word: "RADIANCE", theme: "Self-Mastery & Initiative", friends: [1,2,3,5,9], enemies: [6,8], colors: "Gold, Copper, Saffron", gem: "Ruby (Manikya)", remedy: "Offer Arghya to rising Sun; sit in 5 mins morning sunlight." },
-      2: { planet: "Chandra", lordKey: "Chandra", word: "SERENITY", theme: "Intuition & Emotional Flow", friends: [1,2,5], enemies: [4,7,8,9], colors: "Pearl White, Sea Green", gem: "Natural Pearl (Moti)", remedy: "Practice Chandra Bhedana pranayama; drink water from silver vessel." },
-      3: { planet: "Guru", lordKey: "Brihaspati", word: "EXPANSION", theme: "Wisdom & Sattvic Joy", friends: [1,2,3,9], enemies: [5,6], colors: "Turmeric Yellow, Gold", gem: "Yellow Sapphire (Pukhraj)", remedy: "Apply kesar/haldi tilak; study elevating scripture." },
-      4: { planet: "Rahu", lordKey: "Rahu", word: "ORDER", theme: "Structured Innovation", friends: [5,6,8], enemies: [1,2,9], colors: "Electric Blue, Silver Grey", gem: "Hessonite (Gomed)", remedy: "Keep electronic workspace clutter-free; ground bare feet on earth." },
-      5: { planet: "Budha", lordKey: "Budha", word: "CLARITY", theme: "Agile Intellect & Synthesis", friends: [1,4,5,6], enemies: [2], colors: "Emerald Green, Mint", gem: "Emerald (Panna)", remedy: "Practice Nadi Shodhana pranayama; spend time near greenery." },
-      6: { planet: "Shukra", lordKey: "Shukra", word: "BLISS", theme: "Harmony, Grace & Magnetics", friends: [4,5,6,8], enemies: [1,2,3], colors: "Pure White, Rose, Sky Blue", gem: "Diamond / White Sapphire", remedy: "Cultivate gratitude, music, or fragrance during evening sandhya." },
-      7: { planet: "Ketu", lordKey: "Ketu", word: "SILENCE", theme: "Contemplation & Intuition", friends: [1,2,5,6], enemies: [8,9], colors: "Light Pastel, Ivory", gem: "Cat's Eye (Lehsunia)", remedy: "15 mins Dhyana with left palm over right palm, thumbs touching." },
-      8: { planet: "Shani", lordKey: "Shani", word: "ENDURANCE", theme: "Karmic Poise & Mastery", friends: [4,5,6], enemies: [1,2,9], colors: "Deep Indigo, Navy", gem: "Blue Sapphire (Neelam)", remedy: "Light sesame oil lamp on Saturdays; practice slow, deep exhalations." },
-      9: { planet: "Mangal", lordKey: "Mangal", word: "VITALITY", theme: "Courageous Completion", friends: [1,2,3,9], enemies: [4,5,8], colors: "Crimson, Coral Red", gem: "Red Coral (Moonga)", remedy: "Channel physical energy through structured strength training." }
+      1: { planet: "Surya", lordKey: "Surya", word: "RADIANCE", theme: "Self-Mastery & Initiative", friends: [1,2,3,5,9], enemies: [6,8], colors: "Gold, Copper, Saffron", gem: "Ruby (Manikya)", remedy: "Offer Arghya to rising Sun; 5 mins Surya Namaskar or morning sunlight." },
+      2: { planet: "Chandra", lordKey: "Chandra", word: "SERENITY", theme: "Intuition & Soma Flow", friends: [1,2,5], enemies: [4,7,8,9], colors: "Pearl White, Sea Green", gem: "Natural Pearl (Moti)", remedy: "Practice Ida Nadi (left nostril) awareness & So-Ham Japa." },
+      3: { planet: "Guru", lordKey: "Brihaspati", word: "EXPANSION", theme: "Wisdom & Sattvic Joy", friends: [1,2,3,9], enemies: [5,6], colors: "Turmeric Yellow, Gold", gem: "Yellow Sapphire (Pukhraj)", remedy: "Focus at Ajna/Kutastha during Brahma Muhurta; study scripture." },
+      4: { planet: "Rahu", lordKey: "Rahu", word: "ORDER", theme: "Structured Innovation", friends: [5,6,8], enemies: [1,2,9], colors: "Electric Blue, Silver Grey", gem: "Hessonite (Gomed)", remedy: "Keep electronic workspace clutter-free; practice spinal Kriya pranayama." },
+      5: { planet: "Budha", lordKey: "Budha", word: "CLARITY", theme: "Agile Intellect & Synthesis", friends: [1,4,5,6], enemies: [2], colors: "Emerald Green, Mint", gem: "Emerald (Panna)", remedy: "Practice Nadi Shodhana to balance Ida & Pingala into Sushumna." },
+      6: { planet: "Shukra", lordKey: "Shukra", word: "BLISS", theme: "Harmony, Ojas & Magnetics", friends: [4,5,6,8], enemies: [1,2,3], colors: "Pure White, Rose, Sky Blue", gem: "Diamond / White Sapphire", remedy: "Preserve Ojas via Khechari Mudra during Amrit Kala." },
+      7: { planet: "Ketu", lordKey: "Ketu", word: "SILENCE", theme: "Kutastha Contemplation & Intuition", friends: [1,2,5,6], enemies: [8,9], colors: "Light Pastel, Ivory", gem: "Cat's Eye (Lehsunia)", remedy: "15 mins Hamsa Japa with Khechari + Dhyana Mudra (left palm over right)." },
+      8: { planet: "Shani", lordKey: "Shani", word: "ENDURANCE", theme: "Karmic Poise & Mastery", friends: [4,5,6], enemies: [1,2,9], colors: "Deep Indigo, Navy", gem: "Blue Sapphire (Neelam)", remedy: "Slow, deep spinal exhalations; witness sensations with equanimity." },
+      9: { planet: "Mangal", lordKey: "Mangal", word: "VITALITY", theme: "Courageous Completion", friends: [1,2,3,9], enemies: [4,5,8], colors: "Crimson, Coral Red", gem: "Red Coral (Moonga)", remedy: "Channel physical fire through disciplined strength training & Maha Mudra." }
     };
 
     const chaldeanCompoundMeanings = {
@@ -1033,7 +1232,7 @@
       "Udveg": { nature: "Inauspicious (Sun)", cls: "tag-bad" },
       "Char":  { nature: "Good / Motion (Venus)", cls: "tag-neutral" },
       "Labh":  { nature: "Auspicious / Gain (Mercury)", cls: "tag-good" },
-      "Amrit": { nature: "Best / Nectar (Moon)", cls: "tag-good" },
+      "Amrit": { nature: "Best / Soma Nectar (Khechari Ideal)", cls: "tag-good" },
       "Kaal":  { nature: "Inauspicious / Loss (Saturn)", cls: "tag-bad" },
       "Shubh": { nature: "Auspicious / Sacred (Jupiter)", cls: "tag-good" },
       "Rog":   { nature: "Inauspicious / Friction (Mars)", cls: "tag-bad" }
@@ -1197,7 +1396,6 @@
       return "Full Day";
     }
 
-    // Calculate Active Planetary Hora (Chaldean Order from Sunrise)
     function computeCurrentHora(nowObj, sunriseObj, dayIndex) {
       const chaldeanSeq = ["Surya", "Shukra", "Budha", "Chandra", "Shani", "Brihaspati", "Mangal"];
       const dayLordMap = ["Surya", "Chandra", "Mangal", "Budha", "Brihaspati", "Shukra", "Shani"];
@@ -1206,6 +1404,41 @@
       let diffHours = Math.floor((nowObj.getTime() - sunriseObj.getTime()) / 3600000);
       if (diffHours < 0) diffHours += 24;
       return chaldeanSeq[(startIdx + diffHours) % 7];
+    }
+
+    function computeSvaraAndAmritKala(nowObj, sunriseObj, sunsetObj, isShukla, tithiIdx, dayIndex, nakIdx) {
+      const ghatiOffset = nakshatraAmritGhatis[nakIdx] || 42;
+      const scaledStartMin = Math.floor((ghatiOffset % 30) * 24);
+      const amritStart = new Date(sunriseObj.getTime() + scaledStartMin * 60000);
+      const amritEnd   = new Date(amritStart.getTime() + 72 * 60000);
+
+      const nowMs = nowObj.getTime();
+      const noonMs = sunriseObj.getTime() + (sunsetObj.getTime() - sunriseObj.getTime()) / 2;
+      const isDawnSandhya = Math.abs(nowMs - sunriseObj.getTime()) <= 24 * 60000;
+      const isNoonSandhya = Math.abs(nowMs - noonMs) <= 24 * 60000;
+      const isDuskSandhya = Math.abs(nowMs - sunsetObj.getTime()) <= 24 * 60000;
+      const isInAmritKala = nowMs >= amritStart.getTime() && nowMs <= amritEnd.getTime();
+
+      const tithiInPaksha = (tithiIdx % 15) + 1;
+      const tripletGroup = Math.floor((tithiInPaksha - 1) / 3);
+      const sunriseIda = isShukla ? (tripletGroup % 2 === 0) : (tripletGroup % 2 !== 0);
+      const hoursSinceSunrise = Math.max(0, Math.floor((nowMs - sunriseObj.getTime()) / 3600000));
+      const currentIsIda = (hoursSinceSunrise % 2 === 0) ? sunriseIda : !sunriseIda;
+
+      let svaraName = currentIsIda ? "Ida (Chandra)" : "Pingala (Surya)";
+      if (isDawnSandhya || isNoonSandhya || isDuskSandhya || isInAmritKala) {
+        svaraName = "Sushumna (Merudanda)";
+      }
+
+      return {
+        amritStart,
+        amritEnd,
+        amritStr: `${formatTime(amritStart)} - ${formatTime(amritEnd)}`,
+        isInAmritKala,
+        isSandhya: isDawnSandhya || isNoonSandhya || isDuskSandhya,
+        svaraName,
+        currentIsIda
+      };
     }
 
     function computeVimshottariDasha(birthDateObj, natalMoonSidereal) {
@@ -1270,7 +1503,7 @@
           <div class="dasha-row ${d.isCurrent ? 'active-dasha' : ''}">
             <div>
               <span style="font-weight:700; color:${d.isCurrent ? '#fbbf24' : '#fff'};">${d.lord} Mahadasha</span>
-              ${d.isCurrent && d.activeAntar ? `<div style="font-size:10px; color:var(--success);">Antardasha: ${d.activeAntar.lord} (till ${d.activeAntar.endStr})</div>` : ''}
+              ${d.isCurrent && d.activeAntar ? `<div style="font-size:10px; color:var(--emerald);">Antardasha: ${d.activeAntar.lord} (till ${d.activeAntar.endStr})</div>` : ''}
             </div>
             <div style="font-size:11px; color:var(--text-sub);">Ends ${d.endDateStr}</div>
           </div>
@@ -1336,15 +1569,13 @@
       return num;
     }
 
-    // ==================== HYPER-ADVANCED NUMEROLOGY, PINNACLES & GLOBAL ZODIAC ====================
-    function computeAdvancedNumerologyAndGlobal(dobStr, targetDate, natalGrahas, gocharGrahas, taraObj, chandraHouse, dashaInfo) {
+    function computeAdvancedNumerologyAndGlobal(dobStr, targetDate, natalGrahas, gocharGrahas, taraObj, chandraHouse, dashaInfo, svaraInfo) {
       const [by, bm, bd] = dobStr.split('-').map(Number);
       const mulank = reduceToSingleDigit(bd);
       const allDigitsStr = dobStr.replace(/-/g, '');
       const rawDestinySum = allDigitsStr.split('').reduce((a, c) => a + parseInt(c, 10), 0);
       const bhagyank = reduceToSingleDigit(rawDestinySum);
 
-      // Check Karmic Debt Numbers (13, 14, 16, 19)
       const karmicDebts = [13, 14, 16, 19];
       let debtFound = [];
       if (karmicDebts.includes(bd)) debtFound.push(`Birth Day ${bd}`);
@@ -1362,13 +1593,11 @@
       document.getElementById('kuaVal').innerText = kua;
       document.getElementById('suryaYantraVal').innerText = `Surya Root: ${reduceToSingleDigit(mulank + bhagyank)}`;
 
-      // Personal Year, Month, Week, Day
       const curYear = targetDate.getFullYear();
       const pYear = reduceToSingleDigit(bd + bm + reduceToSingleDigit(curYear));
       const pMonth = reduceToSingleDigit(pYear + (targetDate.getMonth() + 1));
       const pDay = reduceToSingleDigit(pMonth + targetDate.getDate());
 
-      // Calculate ISO Week Number for Personal Week
       const startOfYr = new Date(curYear, 0, 1);
       const weekNo = Math.ceil((((targetDate - startOfYr) / 86400000) + startOfYr.getDay() + 1) / 7);
       const pWeek = reduceToSingleDigit(pMonth + reduceToSingleDigit(weekNo));
@@ -1380,7 +1609,6 @@
       document.getElementById('personalDayVal').innerText = pDay;
       document.getElementById('personalDaySub').innerText = `${numerologyMeta[pDay].planet} • ${numerologyMeta[pDay].word}`;
 
-      // Build Lo-Shu Grid (Counts from DOB + Mulank + Bhagyank + Kua)
       const counts = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0 };
       allDigitsStr.split('').forEach(d => {
         const n = parseInt(d, 10);
@@ -1430,7 +1658,6 @@
         (activePlanes.length ? activePlanes.join('<br>') : '✅ <strong>Focused Individual Pillars Active</strong>') +
         `<br><span style="color:var(--text-sub); font-size:11px;">Missing Karmic Numbers: ${missingNums.join(', ') || 'None'}</span>`;
 
-      // 4 Pinnacle Cycles
       const mR = reduceToSingleDigit(bm);
       const dR = mulank;
       const yR = reduceToSingleDigit(by);
@@ -1457,7 +1684,7 @@
             <span style="font-weight:700; color:${p.active ? '#fbbf24' : '#fff'};">Pinnacle ${p.idx}: Number ${p.num} (${numerologyMeta[p.num].planet})</span>
             <div style="font-size:10px; color:var(--text-sub);">Focus: ${numerologyMeta[p.num].theme}</div>
           </div>
-          <div style="font-size:11px; color:${p.active ? 'var(--success)' : 'var(--text-sub)'}; font-weight:600;">
+          <div style="font-size:11px; color:${p.active ? 'var(--emerald)' : 'var(--text-sub)'}; font-weight:600;">
             ${p.range} ${p.active ? '• ACTIVE' : ''}
           </div>
         </div>
@@ -1466,15 +1693,15 @@
       const mInfo = numerologyMeta[mulank];
       const bInfo = numerologyMeta[bhagyank];
       document.getElementById('numerologyDetailsBox').innerHTML = `
-        <div><strong>• Core Resonance (Mulank ${mulank} - ${mInfo.planet}):</strong> Harmonizes with ${mInfo.friends.join(', ')}. Avoid forcing outcomes on ${mInfo.enemies.join(', ')} dates.</div>
+        <div><strong>• Core Resonance (Mulank ${mulank} - ${mInfo.planet}):</strong> Harmonizes with ${mInfo.friends.join(', ')}. Practice witness silence on ${mInfo.enemies.join(', ')} dates.</div>
         <div><strong>• Destiny Path (Bhagyank ${bhagyank} - ${bInfo.planet}):</strong> ${bInfo.theme} (${bInfo.word}).</div>
         <div><strong>• Sattvic Color Therapy:</strong> ${mInfo.colors} | ${bInfo.colors}</div>
-        <div><strong>• Upaya (Vedic Remedy):</strong> ${mInfo.remedy}</div>
+        <div><strong>• Kriya & Vedic Upaya:</strong> ${mInfo.remedy}</div>
       `;
 
       computeChaldeanName();
 
-      // ==================== TAB 4: MULTI-HORIZON SUGGESTIONS (DAILY, WEEKLY, MONTHLY, YEARLY) ====================
+      // Multi-Horizon Suggestions
       const dLordKey = numerologyMeta[pDay].lordKey;
       const wLordKey = numerologyMeta[pWeek].lordKey;
       const mLordKey = numerologyMeta[pMonth].lordKey;
@@ -1483,12 +1710,12 @@
       document.getElementById('timeSuggestionsContainer').innerHTML = `
         <div class="horizon-card">
           <div class="horizon-header">
-            <span style="font-size:11px; font-weight:800; color:#fbbf24;">1. DAILY SITUATION EVALUATION (${targetDate.toLocaleDateString(undefined,{month:'short',day:'numeric'})})</span>
+            <span style="font-size:11px; font-weight:800; color:#fbbf24;">1. DAILY KRIYA & JYOTISH EVALUATION (${targetDate.toLocaleDateString(undefined,{month:'short',day:'numeric'})})</span>
             <span class="one-word-badge">FOCUS: ${taraObj.word}</span>
           </div>
           <div style="font-size:12px; color:#f3f4f6; line-height:1.5;">
-            <strong>• Cosmic State:</strong> Personal Day <strong>${pDay} (${numerologyMeta[pDay].planet})</strong> meets <strong>${taraObj.name} Tara</strong> & <strong>${chandraHouse}th Chandra Bala</strong>.<br>
-            <strong>• Inner Joy Directive:</strong> Cultivate <em>${taraObj.emotion}</em>. Prioritize ${numerologyMeta[pDay].theme.toLowerCase()} while anchoring the mind in witness consciousness.<br>
+            <strong>• Cosmic & Pranic State:</strong> Personal Day <strong>${pDay} (${numerologyMeta[pDay].planet})</strong> + <strong>${taraObj.name} Tara</strong> + <strong>${svaraInfo.svaraName}</strong>.<br>
+            <strong>• Khechari & Ajapa Window:</strong> Practice <strong>Khechari Mudra</strong> during today's Amrit Kala (<strong>${svaraInfo.amritStr}</strong>) with <em>${taraObj.emotion}</em>.<br>
             <strong>• Daily Beej Mantra:</strong> <span style="color:#fde68a; font-weight:600;">${grahaMantras[dLordKey].sanskrit}</span>
           </div>
         </div>
@@ -1500,7 +1727,7 @@
           </div>
           <div style="font-size:12px; color:#f3f4f6; line-height:1.5;">
             <strong>• Weekly Vibration:</strong> Ruled by <strong>${numerologyMeta[pWeek].planet}</strong> (${numerologyMeta[pWeek].theme}).<br>
-            <strong>• Action & Sadhana:</strong> Align your work sprints and physical conditioning with ${numerologyMeta[pWeek].word.toLowerCase()}. Avoid scattering prana.<br>
+            <strong>• Action & Sadhana:</strong> Align your engineering sprints, conditioning, and spinal Kriya pranayama with ${numerologyMeta[pWeek].word.toLowerCase()}.<br>
             <strong>• Weekly Mantra Anchor:</strong> <span style="color:#fde68a; font-weight:600;">${grahaMantras[wLordKey].sanskrit}</span>
           </div>
         </div>
@@ -1524,14 +1751,13 @@
           </div>
           <div style="font-size:12px; color:#f3f4f6; line-height:1.5;">
             <strong>• Macro Evolution:</strong> Personal Year <strong>${pYear} (${numerologyMeta[pYear].planet})</strong> + <strong>${dashaInfo.maha} Mahadasha</strong>.<br>
-            <strong>• Dharmic Theme:</strong> ${numerologyMeta[pYear].theme}. Build long-term foundations while keeping your inner state light, detached, and joyful.<br>
+            <strong>• Dharmic Theme:</strong> ${numerologyMeta[pYear].theme}. Deepen your Hamsa / So-Ham siddhi while expanding long-term creations from effortless joy.<br>
             <strong>• Yearly Siddha Mantra:</strong> <span style="color:#fde68a; font-weight:600;">${grahaMantras[yLordKey].sanskrit}</span>
           </div>
         </div>
       `;
 
-      // ==================== TAB 5: GLOBAL ASTROLOGICAL COMPARISON (VEDIC, CHINESE, JAPANESE, TIBETAN, WESTERN) ====================
-      // Note: Chinese Solar Calendar (BaZi) starts at Lichun (~Feb 4). If born before Feb 4, effective BaZi year is (by - 1).
+      // Global Astrological Comparison
       const isBeforeLichun = (bm === 1) || (bm === 2 && bd < 4);
       const effectiveSolarYear = isBeforeLichun ? (by - 1) : by;
 
@@ -1560,22 +1786,21 @@
       const nominalAnimal = animals[nominalAnimalIdx];
       const heavenlyStem = stems[stemIdx];
 
-      // Japanese 9-Star Ki (Kyusei Kigaku Hon命星) uses Lichun Solar Year
       let kiSum = reduceToSingleDigit(effectiveSolarYear);
       let honmeiStarNum = 11 - kiSum;
       if (honmeiStarNum > 9) honmeiStarNum -= 9;
       if (honmeiStarNum <= 0) honmeiStarNum += 9;
 
       const nineStars = {
-        1: "1 White Water (ippaku suisei) — Deep Wisdom & Flow",
-        2: "2 Black Earth (jikoku dosei) — Nurturing Devotion & Stability",
-        3: "3 Jade Wood (sanpeki mokusei) — Dynamic Growth & Dawn",
-        4: "4 Green Wood (shiroku mokusei) — Harmonious Wind & Integrity",
-        5: "5 Yellow Earth (goō dosei) — Imperial Center & Core Power",
-        6: "6 White Metal (roppaku kinsei) — Heaven's Dignity & Leadership",
-        7: "7 Red Metal (shichiseki kinsei) — Joy, Contentment & Eloquence",
-        8: "8 White Earth (happaku dosei) — Mountain Stillness & Contemplation",
-        9: "9 Purple Fire (kyūshi kasei) — Illumination, Clarity & Radiance"
+        1: "1 White Water (Ippaku Suisei) — Deep Wisdom & Flow",
+        2: "2 Black Earth (Jikoku Dosei) — Nurturing Devotion & Stability",
+        3: "3 Jade Wood (Sanpeki Mokusei) — Dynamic Growth & Dawn",
+        4: "4 Green Wood (Shiroku Mokusei) — Harmonious Wind & Integrity",
+        5: "5 Yellow Earth (Goō Dosei) — Imperial Center & Core Power",
+        6: "6 White Metal (Roppaku Kinsei) — Heaven's Dignity & Leadership",
+        7: "7 Red Metal (Shichiseki Kinsei) — Joy, Contentment & Eloquence",
+        8: "8 White Earth (Happaku Dosei) — Mountain Stillness & Contemplation",
+        9: "9 Purple Fire (Kyūshi Kasei) — Illumination, Clarity & Radiance"
       };
 
       const westernSignIdx = Math.floor(natalGrahas[1].tropical / 30);
@@ -1593,11 +1818,11 @@
       document.getElementById('westernTropVal').innerText = `Tropical Sun: ${rashis[westernSignIdx]}`;
 
       document.getElementById('easternComparisonText').innerHTML = `
-        <strong>• Cross-Tradition Synthesis for Inner Joy:</strong><br>
-        1. <strong>Vedic Jyotish (Sidereal):</strong> Your Moon in <strong>${natalGrahas[2].rashiName} (${natalGrahas[2].nakshatra})</strong> and <strong>${natalGrahas[0].rashiName} Ascendant</strong> anchor your mental resilience and dharmic work ethic.<br>
+        <strong>• Cross-Tradition Synthesis for Inner Joy & Kriya Siddhi:</strong><br>
+        1. <strong>Vedic Jyotish (Sidereal):</strong> Your Moon in <strong>${natalGrahas[2].rashiName} (${natalGrahas[2].nakshatra})</strong> and <strong>${natalGrahas[0].rashiName} Ascendant</strong> anchor your meditative focus and dharmic work ethic.<br>
         2. <strong>Chinese BaZi (Four Pillars):</strong> ${isBeforeLichun ? `Because your birthday (${bm}/${bd}) falls before the <em>Lichun</em> solar node (Feb 4), classical BaZi places your Year Pillar in <strong>${heavenlyStem} ${baziAnimal.en}</strong> (transitioning into ${nominalAnimal.en}).` : `Your Year Pillar is <strong>${heavenlyStem} ${baziAnimal.en}</strong> (${baziAnimal.trine}).`} This grants fearless initiative balanced by strategic composure.<br>
         3. <strong>Japanese Kyusei Kigaku (9-Star Ki):</strong> Your Honmeisei is <strong>${nineStars[honmeiStarNum]}</strong>. In Japanese esoteric cosmology, this star governs your effortless path to <em>Ananda</em> (serene contentment).<br>
-        4. <strong>Unified Verdict:</strong> Across Vedic, Chinese, and Japanese systems, your highest state of flow arises when you combine <strong>structured outer discipline</strong> with <strong>unattached, meditative inner joy</strong>.
+        4. <strong>Unified Verdict:</strong> Across Vedic, Chinese, and Japanese systems, your highest state of flow arises when you combine <strong>structured outer discipline</strong> with <strong>unattached Khechari / So-Ham inner joy</strong>.
       `;
 
       return { mulank, bhagyank, pYear, pMonth, pWeek, pDay, baziAnimal: baziAnimal.en, honmeiStar: nineStars[honmeiStarNum] };
@@ -1624,43 +1849,365 @@
       }
     }
 
-    // ==================== MASTER END-OF-SCREEN ANANDA & VEDIC MANTRA ENGINE ====================
-    function updateMasterAnandaEngine(numData, taraObj, chandraHouse, dayIndex, activeHoraLord, dashaInfo) {
-      // Determine 1-Word Focus & Soul Emotion based on combined situation evaluation
+    function updateMasterAnandaEngine(numData, taraObj, chandraHouse, dayIndex, activeHoraLord, dashaInfo, svaraInfo, isShukla) {
       let oneWord = "INNER JOY (ANANDA)";
-      let emotion = taraObj.emotion;
-      let mudra = "Dhyana Mudra • Left palm over right, thumbs touching";
-
-      if (chandraHouse === 8 || taraObj.name.includes("Vipat") || taraObj.name.includes("Naidhana")) {
+      if (svaraInfo.isInAmritKala) {
+        oneWord = "AMRIT SOMA • ANANDA";
+      } else if (chandraHouse === 8 || taraObj.name.includes("Vipat") || taraObj.name.includes("Naidhana")) {
         oneWord = "STILLNESS • ANANDA";
-        emotion = "route all outer friction into Sakshi Bhava (calm witnessing)";
-        mudra = "Dhyana Mudra • Deep slow exhalations (Prana Samyama)";
       } else if (taraObj.name.includes("Sampat") || taraObj.name.includes("Sadhana") || taraObj.name.includes("Parama")) {
         oneWord = `${taraObj.word} • ANANDA`;
-        emotion = `${taraObj.emotion} & effortless dharmic execution`;
       } else {
         oneWord = `${numerologyMeta[numData.pDay].word} • JOY`;
       }
 
-      document.getElementById('masterOneWordFocus').innerText = oneWord;
-      document.getElementById('masterEmotionFocus').innerText = taraObj.emotion;
-      document.getElementById('masterBreathMudra').innerText = mudra;
+      const isCoolingHora = ["Chandra", "Budha", "Brihaspati", "Shukra"].includes(activeHoraLord);
+      if (isShukla || isCoolingHora || svaraInfo.isInAmritKala) {
+        currentAjapaType = "SO-HAM";
+        document.getElementById('masterAjapaMode').innerText = "So-Ham Japa (सोऽहम्)";
+        document.getElementById('masterBreathMudra').innerText = "Inhale 'So' (Up Spine) • Exhale 'Ham' + Khechari";
+      } else {
+        currentAjapaType = "HAM-SA";
+        document.getElementById('masterAjapaMode').innerText = "Hamsa Japa (हंसः)";
+        document.getElementById('masterBreathMudra').innerText = "Inhale 'Ham' (Kutastha) • Exhale 'Sa' + Dhyana Mudra";
+      }
 
-      document.getElementById('masterCycleAlign').innerText =
-        `P.Yr ${numData.pYear} • P.Mo ${numData.pMonth} • P.Day ${numData.pDay}`;
-      document.getElementById('masterHoraLord').innerText =
-        `Active Hora: ${activeHoraLord} | Dasha: ${dashaInfo.summary}`;
+      if (!isSohamRunning) {
+        document.getElementById('pacerToggleBtn').innerText = `▶ Start ${currentAjapaType === 'SO-HAM' ? 'So-Ham' : 'Hamsa'} Loop`;
+      }
+
+      document.getElementById('masterOneWordFocus').innerText = oneWord;
+      document.getElementById('masterCycleAlign').innerText = `Amrit: ${svaraInfo.amritStr}`;
+      document.getElementById('masterHoraLord').innerText = `Hora: ${activeHoraLord} | Svara: ${svaraInfo.svaraName}`;
+      document.getElementById('khechariWindowBadge').innerText = svaraInfo.isInAmritKala ? "🔥 AMRIT KALA NOW" : `Amrit: ${svaraInfo.amritStr}`;
 
       document.getElementById('masterSituationEval').innerHTML =
-        `<strong>Live Scriptural Verdict:</strong> Transit Moon is in the <strong>${chandraHouse}th house</strong> from your Janma Rashi under <strong>${taraObj.name} Tara</strong> during <strong>${activeHoraLord} Hora</strong>. Your highest leverage right now is <strong>${oneWord}</strong>—acting from a state of already-complete inner fulfillment (<em>Atma-Tripti</em>) rather than external pressure.`;
+        `<strong>Live Kriya & Scriptural Verdict:</strong> Transit Moon is in the <strong>${chandraHouse}th house</strong> under <strong>${taraObj.name} Tara</strong> during <strong>${activeHoraLord} Hora</strong> (${svaraInfo.svaraName} Nadi). ${svaraInfo.isInAmritKala ? '<span style="color:#34d399; font-weight:700;">Nakshatra Amrit Kala is ACTIVE right now—optimal window for Khechari Mudra & Soma absorption!</span>' : `Today's prime <strong>Khechari Amrit Kala</strong> window is <strong>${svaraInfo.amritStr}</strong>.`} Cultivate <em>${taraObj.emotion}</em>.`;
 
-      // Select Mantra based on Active Hora Lord (or Vara Lord)
       const mantraObj = grahaMantras[activeHoraLord] || grahaMantras["Budha"];
       document.getElementById('masterMantraSource').innerText = `Prescribed for Active ${activeHoraLord} Hora & Inner Joy`;
       document.getElementById('masterMantraSanskrit').innerText = mantraObj.sanskrit;
       document.getElementById('masterMantraTranslit').innerText = mantraObj.translit;
       document.getElementById('masterMantraEffect').innerHTML =
         `${mantraObj.effect}<br><span style="color:#9ca3af; font-size:10px;">Vedic Gayatri: ${mantraObj.gayatri}</span>`;
+
+      updateMalaUI();
+    }
+
+    // ==================== IOS LOCK-SCREEN BACKGROUND AUDIO & SOHAM LOOP ENGINE ====================
+    function ensureAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Generate an in-memory silent/sub-audible harmonic WAV data-URI to keep iOS background audio engine active
+    function createIosBackgroundAudioTrack() {
+      const sampleRate = 8000;
+      const numSeconds = 3;
+      const numSamples = sampleRate * numSeconds;
+      const buffer = new ArrayBuffer(44 + numSamples * 2);
+      const view = new DataView(buffer);
+
+      function writeString(view, offset, string) {
+        for (let i = 0; i < string.length; i++) {
+          view.setUint8(offset + i, string.charCodeAt(i));
+        }
+      }
+
+      writeString(view, 0, 'RIFF');
+      view.setUint32(4, 36 + numSamples * 2, true);
+      writeString(view, 8, 'WAVE');
+      writeString(view, 12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true); // PCM
+      view.setUint16(22, 1, true); // Mono
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeString(view, 36, 'data');
+      view.setUint32(40, numSamples * 2, true);
+
+      // Generate barely audible 136.1 Hz sine to keep DAC powered
+      for (let i = 0; i < numSamples; i++) {
+        const sample = Math.sin((2 * Math.PI * 136.1 * i) / sampleRate) * 8; // very low amplitude
+        view.setInt16(44 + i * 2, sample, true);
+      }
+
+      const blob = new Blob([buffer], { type: 'audio/wav' });
+      return URL.createObjectURL(blob);
+    }
+
+    function initIosLockScreenMediaSession() {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: 'So-Ham / Hamsa Kriya Loop (136.1Hz Om)',
+          artist: 'Siddhanta Jyotish Pro',
+          album: 'Ananda Sacred Meditation',
+          artwork: [
+            { src: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"%3E%3Crect width="512" height="512" rx="120" fill="%2305070d"/%3E%3Ctext x="256" y="335" font-size="250" text-anchor="middle" fill="%23fbbf24" font-family="serif"%3E%E0%A5%90%3C/text%3E%3C/svg%3E', sizes: '512x512', type: 'image/svg+xml' }
+          ]
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => {
+          if (!isSohamRunning) toggleContinuousSoham();
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+          if (isSohamRunning) toggleContinuousSoham();
+        });
+        navigator.mediaSession.setActionHandler('stop', () => {
+          if (isSohamRunning) toggleContinuousSoham();
+        });
+      }
+    }
+
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator && !wakeLockSentinel) {
+          wakeLockSentinel = await navigator.wakeLock.request('screen');
+        }
+      } catch (e) {}
+    }
+
+    function releaseWakeLock() {
+      if (wakeLockSentinel) {
+        try { wakeLockSentinel.release(); } catch (e) {}
+        wakeLockSentinel = null;
+      }
+    }
+
+    function playSoftBell(freq = 528, duration = 0.35) {
+      try {
+        ensureAudioContext();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function toggleOmDrone() {
+      const btn = document.getElementById('droneToggleBtn');
+      if (isDronePlaying) {
+        if (droneGain && audioCtx) {
+          droneGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+          setTimeout(() => {
+            try { droneOsc1.stop(); droneOsc2.stop(); } catch (e) {}
+            isDronePlaying = false;
+          }, 320);
+        }
+        btn.innerText = "🔔 136.1Hz Om";
+        btn.style.background = "";
+        btn.style.color = "";
+      } else {
+        ensureAudioContext();
+        requestWakeLock();
+        droneOsc1 = audioCtx.createOscillator();
+        droneOsc2 = audioCtx.createOscillator();
+        droneGain = audioCtx.createGain();
+
+        droneOsc1.type = 'sine';
+        droneOsc2.type = 'triangle';
+        droneOsc1.frequency.setValueAtTime(136.1, audioCtx.currentTime);
+        droneOsc2.frequency.setValueAtTime(204.15, audioCtx.currentTime);
+
+        droneGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        droneGain.gain.exponentialRampToValueAtTime(0.07, audioCtx.currentTime + 1.0);
+
+        droneOsc1.connect(droneGain);
+        droneOsc2.connect(droneGain);
+        droneGain.connect(audioCtx.destination);
+
+        droneOsc1.start();
+        droneOsc2.start();
+        isDronePlaying = true;
+        btn.innerText = "⏹ Stop Om";
+        btn.style.background = "var(--accent)";
+        btn.style.color = "#000";
+      }
+    }
+
+    function highlightChakraNode(stepPct) {
+      for (let i = 1; i <= 7; i++) {
+        document.getElementById(`chk${i}`)?.classList.remove('active-node');
+      }
+      const activeIdx = Math.min(7, Math.max(1, Math.ceil((stepPct / 100) * 7)));
+      document.getElementById(`chk${activeIdx}`)?.classList.add('active-node');
+    }
+
+    // Continuous So-Ham Engine with background lock-screen persistence via HTML5 audio element
+    function toggleContinuousSoham() {
+      const btn = document.getElementById('pacerToggleBtn');
+      const fill = document.getElementById('spineFillBar');
+      const instr = document.getElementById('kriyaBreathInstruction');
+      const audioEl = document.getElementById('iosBackgroundAudio');
+      const label = currentAjapaType === 'SO-HAM' ? 'So-Ham' : 'Hamsa';
+
+      if (isSohamRunning) {
+        isSohamRunning = false;
+        clearInterval(sohamIntervalId);
+        if (sohamBreathGain && audioCtx) {
+          try {
+            sohamBreathGain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.15);
+            setTimeout(() => {
+              try { sohamCarrierOsc.stop(); sohamHarmonicOsc.stop(); } catch (e) {}
+            }, 250);
+          } catch (e) {}
+        }
+
+        try { audioEl.pause(); } catch (e) {}
+        if ('mediaSession' in navigator) {
+          navigator.mediaSession.playbackState = "paused";
+        }
+
+        releaseWakeLock();
+        fill.style.width = "0%";
+        btn.innerText = `▶ Start ${label} Loop`;
+        btn.style.background = "";
+        btn.style.color = "";
+        instr.innerText = "Stopped. Tap '▶ Start' to resume continuous So-Ham loop.";
+        return;
+      }
+
+      ensureAudioContext();
+      requestWakeLock();
+
+      // Trigger HTML5 audio loop with in-memory WAV data-URI so iOS Safari keeps playing with screen locked
+      if (!audioEl.src) {
+        audioEl.src = createIosBackgroundAudioTrack();
+      }
+      audioEl.play().catch(() => {});
+      initIosLockScreenMediaSession();
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = "playing";
+      }
+
+      sohamCarrierOsc = audioCtx.createOscillator();
+      sohamHarmonicOsc = audioCtx.createOscillator();
+      sohamBreathGain = audioCtx.createGain();
+
+      sohamCarrierOsc.type = 'sine';
+      sohamHarmonicOsc.type = 'sine';
+
+      sohamCarrierOsc.frequency.setValueAtTime(136.1, audioCtx.currentTime);
+      sohamHarmonicOsc.frequency.setValueAtTime(204.15, audioCtx.currentTime);
+      sohamBreathGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+
+      sohamCarrierOsc.connect(sohamBreathGain);
+      sohamHarmonicOsc.connect(sohamBreathGain);
+      sohamBreathGain.connect(audioCtx.destination);
+
+      sohamCarrierOsc.start();
+      sohamHarmonicOsc.start();
+
+      isSohamRunning = true;
+      sohamStartTime = Date.now();
+      lastCompletedCycleCount = 0;
+
+      btn.innerText = `⏹ Stop ${label} Loop`;
+      btn.style.background = "#34d399";
+      btn.style.color = "#000";
+
+      const cycleDurationMs = 10000;
+
+      // Use a rock-solid setInterval timer that runs continuously even when Safari throttles rAF
+      sohamIntervalId = setInterval(() => {
+        if (!isSohamRunning) return;
+
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const elapsedMs = Date.now() - sohamStartTime;
+        const completedCycles = Math.floor(elapsedMs / cycleDurationMs);
+
+        if (completedCycles > lastCompletedCycleCount) {
+          lastCompletedCycleCount = completedCycles;
+          incrementMalaBead(true);
+        }
+
+        const phaseMs = elapsedMs % cycleDurationMs;
+        const inSyl = currentAjapaType === "SO-HAM" ? "SO (सो)" : "HAM (हं)";
+        const outSyl = currentAjapaType === "SO-HAM" ? "HAM (हम्)" : "SA (सः)";
+
+        if (phaseMs < 4000) {
+          const progress = phaseMs / 4000;
+          const pct = progress * 100;
+          fill.style.width = `${pct.toFixed(1)}%`;
+          highlightChakraNode(pct);
+
+          const curFreq = 136.1 + (136.1 * progress);
+          if (audioCtx && sohamCarrierOsc) {
+            sohamCarrierOsc.frequency.setTargetAtTime(curFreq, audioCtx.currentTime, 0.08);
+            sohamHarmonicOsc.frequency.setTargetAtTime(curFreq * 1.5, audioCtx.currentTime, 0.08);
+            sohamBreathGain.gain.setTargetAtTime(0.02 + 0.065 * Math.sin(progress * Math.PI), audioCtx.currentTime, 0.08);
+          }
+          instr.innerHTML = `<strong style="color:#34d399;">Inhale ${inSyl}:</strong> Muladhara → Kutastha (Breath #${completedCycles + 1})`;
+        } else if (phaseMs < 6000) {
+          fill.style.width = `100%`;
+          highlightChakraNode(100);
+
+          if (audioCtx && sohamCarrierOsc) {
+            sohamCarrierOsc.frequency.setTargetAtTime(272.2, audioCtx.currentTime, 0.08);
+            sohamHarmonicOsc.frequency.setTargetAtTime(408.3, audioCtx.currentTime, 0.08);
+            sohamBreathGain.gain.setTargetAtTime(0.048, audioCtx.currentTime, 0.08);
+          }
+          instr.innerHTML = `<strong style="color:#fbbf24;">Kutastha Hold:</strong> Khechari Soma Nectar in Ananda`;
+        } else {
+          const progress = (phaseMs - 6000) / 4000;
+          const pct = (1 - progress) * 100;
+          fill.style.width = `${pct.toFixed(1)}%`;
+          highlightChakraNode(pct);
+
+          const curFreq = 272.2 - (136.1 * progress);
+          if (audioCtx && sohamCarrierOsc) {
+            sohamCarrierOsc.frequency.setTargetAtTime(curFreq, audioCtx.currentTime, 0.08);
+            sohamHarmonicOsc.frequency.setTargetAtTime(curFreq * 1.5, audioCtx.currentTime, 0.08);
+            sohamBreathGain.gain.setTargetAtTime(0.015 + 0.06 * Math.sin(progress * Math.PI), audioCtx.currentTime, 0.08);
+          }
+          instr.innerHTML = `<strong style="color:#c084fc;">Exhale ${outSyl}:</strong> Kutastha → Muladhara`;
+        }
+      }, 100);
+    }
+
+    function updateMalaUI() {
+      if (malaCount >= 27 && malaTarget === 27) malaTarget = 108;
+      document.getElementById('malaCounterDisplay').innerText = `${malaCount} / ${malaTarget}`;
+    }
+
+    function incrementMalaBead(fromAutoLoop = false) {
+      malaCount++;
+      localStorage.setItem('jyotish_mala_count', malaCount);
+      if (malaCount === 27 || malaCount === 54 || malaCount === 108) {
+        playSoftBell(639, 0.8);
+      } else if (!fromAutoLoop) {
+        playSoftBell(432, 0.12);
+      } else {
+        playSoftBell(528, 0.18);
+      }
+      if (malaCount > 108) {
+        malaCount = 1;
+        malaTarget = 27;
+      }
+      updateMalaUI();
+    }
+
+    function resetMalaCount() {
+      malaCount = 0;
+      malaTarget = 27;
+      localStorage.setItem('jyotish_mala_count', 0);
+      updateMalaUI();
     }
 
     function setChartMode(mode) {
@@ -1730,7 +2277,7 @@
     function calculatePanchang() {
       const targetDate = viewDate;
       document.getElementById('coordDisplay').innerText = `${userLat.toFixed(2)}°N, ${userLon.toFixed(2)}°E`;
-      document.getElementById('ayanamshaDisplay').innerText = `${getLahiriAyanamsha(targetDate).toFixed(2)}°`;
+      document.getElementById('ayanamshaDisplay').innerText = `Lahiri ${getLahiriAyanamsha(targetDate).toFixed(2)}°`;
       document.getElementById('currentDateDisplay').innerText = targetDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
 
       document.getElementById('selectedDateInput').value = `${targetDate.getFullYear()}-${String(targetDate.getMonth()+1).padStart(2,'0')}-${String(targetDate.getDate()).padStart(2,'0')}`;
@@ -1783,6 +2330,12 @@
       document.getElementById('karanaVal').innerText = karanaName;
       document.getElementById('moonRashiVal').innerText = `Transit Moon in ${gocharGrahas[2].rashiName}`;
 
+      const svaraInfo = computeSvaraAndAmritKala(new Date(), sunTimes.sunrise, sunTimes.sunset, isShukla, tithiIdx, dayIndex, currentNakIdx);
+      document.getElementById('activeSvaraDisplay').innerText = svaraInfo.svaraName.split(' ')[0];
+      document.getElementById('amritKalaVal').innerText = svaraInfo.amritStr;
+      document.getElementById('khechariLiveStatus').innerText = svaraInfo.isInAmritKala ? "🔥 AMRIT KALA ACTIVE" : `Svara: ${svaraInfo.svaraName}`;
+      document.getElementById('sandhyaVal').innerText = `${formatTime(sunTimes.sunrise)} & ${formatTime(sunTimes.sunset)} (±24m)`;
+
       const natalMoonNak = natalGrahas[2].nakIndex;
       const natalMoonRashi = natalGrahas[2].rashiIndex;
       document.getElementById('natalSummaryBadge').innerText = `Janma: ${rashis[natalMoonRashi]} • ${nakshatras[natalMoonNak]}`;
@@ -1796,7 +2349,7 @@
       const isChandraGood = [1,3,6,7,10,11].includes(chandraHouse);
       document.getElementById('chandraBalaVal').innerText = `${chandraHouse}th from Janma Moon`;
       document.getElementById('chandraBalaVal').className = `anga-val ${isChandraGood ? 'tag-good' : (chandraHouse === 8 ? 'tag-bad' : 'tag-neutral')}`;
-      document.getElementById('chandraBalaSub').innerText = chandraHouse === 8 ? "Ashtama Chandra (Inward Dhyana)" : (isChandraGood ? "Auspicious Lunar Force" : "Balanced Lunar Transit");
+      document.getElementById('chandraBalaSub').innerText = chandraHouse === 8 ? "Ashtama Chandra (Deep Kriya Dhyana)" : (isChandraGood ? "Auspicious Lunar Force" : "Balanced Lunar Transit");
 
       const dayLengthMs = sunTimes.sunset.getTime() - sunTimes.sunrise.getTime();
       const nightLengthMs = nextSunTimes.sunrise.getTime() - sunTimes.sunset.getTime();
@@ -1806,20 +2359,21 @@
       const timingParts = dayParts[dayIndex];
       const getSlot = (part) => `${formatTime(new Date(sunTimes.sunrise.getTime() + (part - 1) * (dayLengthMs / 8)))} - ${formatTime(new Date(sunTimes.sunrise.getTime() + part * (dayLengthMs / 8)))}`;
       document.getElementById('rahuVal').innerText = getSlot(timingParts.rahu);
-      document.getElementById('yamaVal').innerText = getSlot(timingParts.yama);
-      document.getElementById('gulikaVal').innerText = getSlot(timingParts.gulika);
+      document.getElementById('yamaGulikaVal').innerText = `Yama: ${getSlot(timingParts.yama)} | Gulika: ${getSlot(timingParts.gulika)}`;
 
       choghadiyaData.day = dayChogSequences[dayIndex].map((name, i) => ({ name, start: new Date(sunTimes.sunrise.getTime() + i * (dayLengthMs / 8)), end: new Date(sunTimes.sunrise.getTime() + (i + 1) * (dayLengthMs / 8)) }));
       choghadiyaData.night = nightChogSequences[dayIndex].map((name, i) => ({ name, start: new Date(sunTimes.sunset.getTime() + i * (nightLengthMs / 8)), end: new Date(sunTimes.sunset.getTime() + (i + 1) * (nightLengthMs / 8)) }));
       renderChoghadiya();
 
-      const numData = computeAdvancedNumerologyAndGlobal(savedDob, targetDate, natalGrahas, gocharGrahas, taraObj, chandraHouse, dashaInfo);
-      updateMasterAnandaEngine(numData, taraObj, chandraHouse, dayIndex, activeHoraLord, dashaInfo);
+      const numData = computeAdvancedNumerologyAndGlobal(savedDob, targetDate, natalGrahas, gocharGrahas, taraObj, chandraHouse, dashaInfo, svaraInfo);
+      updateMasterAnandaEngine(numData, taraObj, chandraHouse, dayIndex, activeHoraLord, dashaInfo, svaraInfo, isShukla);
 
       latestContextSummary = {
         date: targetDate.toDateString(),
         tithi: `${tithis[tithiIdx]} (upto ${tithiEndTime})`,
         nakshatra: `${nakshatras[currentNakIdx]} (upto ${nakEndTime})`,
+        amritKala: svaraInfo.amritStr,
+        svaraNadi: svaraInfo.svaraName,
         taraBala: `${taraObj.name} (${taraObj.desc})`,
         chandraBala: `${chandraHouse}th house from Janma Rashi`,
         activeHora: activeHoraLord,
@@ -1859,12 +2413,12 @@
         return;
       }
 
-      outEl.innerText = "⏳ Synthesizing Brihat Parashara Hora Shastra, D9 Navamsha, Sankhya Shastra & Eastern BaZi/Ki...";
+      outEl.innerText = "⏳ Synthesizing Brihat Parashara Hora Shastra, Kriya Yoga Svara Shastra, D9 Navamsha & Eastern BaZi...";
 
-      const sysPrompt = `You are a supreme Vedic Jyotish Acharya (master of Brihat Parashara Hora Shastra, Phaladeepika, Muhurta Chintamani), Sankhya Numerologist, and Eastern BaZi / 9-Star Ki scholar. The user's primary life aspiration is INNER JOY (Ananda / Atma-Prasada).
+      const sysPrompt = `You are a supreme Vedic Jyotish Acharya (Brihat Parashara Hora Shastra), Kriya Yoga & Shiva Swarodaya adept (master of Khechari Mudra, So-Ham / Hamsa Japa, and Sushumna awakening), Sankhya Numerologist, and Eastern BaZi / 9-Star Ki scholar. The user's core aspiration is INNER JOY (Ananda).
 User's Exact Real-Time State:
-- Date: ${latestContextSummary.date} | Active Hora: ${latestContextSummary.activeHora}
-- Panchang: Tithi ${latestContextSummary.tithi}, Nakshatra ${latestContextSummary.nakshatra}
+- Date: ${latestContextSummary.date} | Active Hora: ${latestContextSummary.activeHora} | Svara Nadi: ${latestContextSummary.svaraNadi}
+- Panchang: Tithi ${latestContextSummary.tithi}, Nakshatra ${latestContextSummary.nakshatra}, Amrit Kala (Khechari Window): ${latestContextSummary.amritKala}
 - Transit Strength: Tara Bala ${latestContextSummary.taraBala}, Chandra Bala ${latestContextSummary.chandraBala}
 - Active Vimshottari Dasha: ${latestContextSummary.activeDasha}
 - Numerology: ${latestContextSummary.numerology}
@@ -1872,10 +2426,9 @@ User's Exact Real-Time State:
 - Natal D1 & D9: ${latestContextSummary.natalD1}
 - Current Gochar: ${latestContextSummary.gochar}
 
-Provide a deeply insightful, structured reading that ends with: (1) One Core Focus Word, (2) Emotional/Meditative alignment for Inner Joy, and (3) A specific pure Vedic Sanskrit Beej or Suktam Mantra with meaning.`;
+Provide a deeply insightful, structured reading that ends with: (1) One Core Focus Word, (2) Specific Kriya Yoga / Khechari / So-Ham or Hamsa alignment for Inner Joy, and (3) A pure Vedic Sanskrit Beej or Suktam Mantra with meaning.`;
 
       try {
-        // Automatic fallback across current Gemini Flash endpoints
         let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1924,6 +2477,12 @@ Provide a deeply insightful, structured reading that ends with: (1) One Core Foc
         }
       );
     }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && isSohamRunning) {
+        requestWakeLock();
+      }
+    });
 
     window.addEventListener('load', () => {
       calculatePanchang();
